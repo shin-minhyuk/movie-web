@@ -7,6 +7,8 @@ import Detail from "./pages/Detail";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMovieDataById } from "./RTK/thunk";
+import axios from "axios";
+import Login from "./components/Login";
 
 function App() {
   const dispatch = useDispatch();
@@ -14,6 +16,12 @@ function App() {
   useEffect(() => {
     dispatch(fetchMovieDataById(20));
   }, []);
+
+  const movieDetailData = async () => {
+    const res = await axios.get("/movieDetailData.json");
+    console.log(res.data);
+  };
+  movieDetailData();
 
   return (
     <div className="App">
@@ -24,8 +32,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/search" element={<Search />}></Route>
-        <Route path="/detail:id" element={<Detail />}></Route>
+        <Route path="/detail/:id" element={<Detail />}></Route>
       </Routes>
+      <Login />
     </div>
   );
 }

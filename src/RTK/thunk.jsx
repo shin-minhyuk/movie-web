@@ -18,7 +18,8 @@ export const fetchMovieDataById = createAsyncThunk(
         back: VITE_IMG_URL + res.data.results[index].backdrop_path,
         title: res.data.results[index].title,
         description: res.data.results[index].overview,
-        release_data: res.data.results[index].release_data,
+        release_date: res.data.results[index].release_date,
+        vote_average: res.data.results[index].vote_average,
       };
       return movieData;
     };
