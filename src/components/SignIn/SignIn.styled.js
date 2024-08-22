@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   position: fixed;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: var(--bg-color-opacity);
+
   top: 0;
   left: 0;
   right: 0;
@@ -14,9 +15,10 @@ export const Wrapper = styled.div`
 
 export const Inner = styled.div`
   display: flex;
+
   flex-direction: column;
   align-items: center;
-  background-color: rgb(19, 19, 19);
+  background-color: var(--background-color);
   width: 60%;
   max-width: 580px;
 
