@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.scss";
-import Header from "./components/Header";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Detail from "./pages/Detail";
@@ -8,7 +7,9 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchMovieDataById } from "./RTK/thunk";
 import axios from "axios";
+import Header from "./components/Header";
 import Login from "./components/Login";
+import GlobalLoading from "./components/GlobalLoading";
 
 function App() {
   const dispatch = useDispatch();
@@ -17,16 +18,11 @@ function App() {
     dispatch(fetchMovieDataById(20));
   }, []);
 
-  const movieDetailData = async () => {
-    const res = await axios.get("/movieDetailData.json");
-    console.log(res.data);
-  };
-  movieDetailData();
-
   return (
     <div className="App">
       {/* layout */}
       <Header />
+      <GlobalLoading />
 
       {/* route pages */}
       <Routes>

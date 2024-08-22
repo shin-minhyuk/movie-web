@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { modalSlice } from "../RTK/modalSlice";
 import Button from "./Button";
+import Logo from "./Logo";
 
 export default function Header() {
   return (
@@ -9,9 +10,7 @@ export default function Header() {
       <header className="header_container">
         <div className="header_inner">
           <div className="header_nav">
-            <p className="header_logo">
-              Min<span>Flix</span>
-            </p>
+            <Logo />
             <Link className="header_nav_link" to="/">
               홈
             </Link>
