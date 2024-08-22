@@ -14,8 +14,8 @@ export default function Login() {
     // 모달창 내렸을 때, 로그인 상태값 전부 초기화
     loginValue.email = "";
     loginValue.password = "";
-    loginErrorValue.email = "";
-    loginErrorValue.password = "";
+    loginError.email = "";
+    loginError.password = "";
 
     // basic isLogin value 초기화
     setIsLogin(true);
@@ -25,22 +25,22 @@ export default function Login() {
     email: "",
     password: "",
   });
-  const [loginErrorValue, setLoginErrorValue] = useState({
+  const [loginError, setLoginError] = useState({
     email: "",
     password: "",
   });
 
   const onChangeLogin = (event) => {
     const { value, name } = event.target;
+    const error = valueValidation(value, name);
 
     setLoginValue({
       ...loginValue,
       [name]: value,
     });
-    const error = valueValidation(value, name);
-    console.log(error);
-    setLoginErrorValue({
-      ...loginErrorValue,
+
+    setLoginError({
+      ...loginError,
       [name]: error[name],
     });
   };
@@ -70,11 +70,11 @@ export default function Login() {
         break;
       case "password":
         outputValue = (value) => {
-          const MIN_PASSWORD_NUM = 5;
-          if (value.length >= MIN_PASSWORD_NUM) {
+          const MIN_PASSWORD_COUNT = 5;
+          if (value.length >= MIN_PASSWORD_COUNT) {
             return "";
           } else {
-            return `비밀번호는 ${MIN_PASSWORD_NUM}자리 이상이어야 합니다.`;
+            return `비밀번호는 ${MIN_PASSWORD_COUNT}자리 이상이어야 합니다.`;
           }
         };
         break;
@@ -86,6 +86,11 @@ export default function Login() {
       [name]: errorMessage,
     };
   };
+
+  const disabled =
+    Object.values(loginValue).every((el) => el !== "") &&
+    Object.values(loginError).every((el) => el === "");
+  console.log("disabled: ", disabled);
 
   return (
     <>
@@ -108,7 +113,7 @@ export default function Login() {
                 value={loginValue.email}
                 onChange={onChangeLogin}
               />
-              {loginErrorValue.email ? loginErrorValue.email : null}
+              {loginError.email ? loginError.email : null}
               <input
                 placeholder="비밀번호를 작성해주세요"
                 type="password"
@@ -116,8 +121,13 @@ export default function Login() {
                 autoComplete="off"
                 onChange={onChangeLogin}
               />
-              {loginErrorValue.password ? loginErrorValue.password : null}
-              <button type="submit" onClick={() => setIsLogin(true)}>
+              {loginError.password ? loginError.password : null}
+              <button
+                disabled={!disabled}
+                style={{ backgroundColor: disabled ? null : "#999" }}
+                type="submit"
+                onClick={() => setIsLogin(true)}
+              >
                 로그인
               </button>
               <Styled.Kakao>
@@ -142,8 +152,93 @@ function SignUp({ setIsLogin, handleClose }) {
     password: "",
     passwordRe: "",
   });
+  const [inpSignUpError, setInpSignUpError] = useState({
+    nickname: "",
+    email: "",
+    password: "",
+    passwordRe: "",
+  });
 
-  const onChangeSignUp = () => {};
+  // 인풋 상태 업데이트
+  const onChangeSignUp = (event) => {
+    const { value, name } = event.target;
+
+    // inp상태 업데이트
+    setInpSignUpValue({
+      ...inpSignUpValue,
+      [name]: value,
+    });
+
+    const error = signUpValidator(value, name);
+    console.log(error);
+
+    setInpSignUpError({
+      ...inpSignUpError,
+      [name]: error[name],
+    });
+  };
+
+  // 유효성 검사
+  const signUpValidator = (value, name) => {
+    let outputValue = (value) => {
+      return Boolean(value);
+    };
+
+    if (outputValue === "") {
+      const fieldName =
+        name === "nickname"
+          ? "닉네임이"
+          : name === "email "
+          ? "이메일이"
+          : name === "password"
+          ? "비밀번호가"
+          : name === "passwordRe"
+          ? "비밀번호가"
+          : "";
+
+      return `${fieldName} 입력되지 않았습니다`;
+    }
+
+    // 인풋값 조건부 에러출력
+    switch (name) {
+      case "nickname":
+        outputValue = (value) => {
+          // - 2자 이상 16자 이하, 영어 또는 숫자 또는 한글로 구성
+          // * 특이사항 : 한글 초성 및 모음은 허가하지 않는다.
+          const reg = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/;
+          return reg.test(value) ? "" : "닉네임이 올바르지 않습니다";
+        };
+        break;
+      case "email":
+        outputValue = (value) => {
+          const reg = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+          return reg.test(value)
+            ? ""
+            : "이메일이 정해진 규칙에 올바르지 않습니다";
+        };
+        break;
+      case "password":
+        outputValue = (value) => {
+          const MIN_PASSWORD_COUNT = 5;
+          if (value.length > MIN_PASSWORD_COUNT) return "";
+          else return "비밀번호는 5자리 이상이어야 합니다";
+        };
+        break;
+      case "passwordRe":
+        outputValue = (value) => {
+          const MIN_PASSWORD_COUNT = 5;
+          if (value.length > MIN_PASSWORD_COUNT) return "";
+          else return "비밀번호는 5자리 이상이어야 합니다";
+        };
+        break;
+    }
+
+    const errorMessage = outputValue(value);
+    console.log("에러: ", errorMessage);
+    return {
+      [name]: errorMessage,
+    };
+  };
 
   return (
     <Styled.Wrapper className="login_container" onClick={handleClose}>
@@ -159,22 +254,34 @@ function SignUp({ setIsLogin, handleClose }) {
             type="text"
             name="nickname"
             placeholder="닉네임을 입력해주세요"
+            value={inpSignUpValue.nickname}
+            onChange={onChangeSignUp}
           />
+          {inpSignUpError.nickname ? inpSignUpError.nickname : ""}
           <input
             type="email"
             name="email"
             placeholder="이메일 (example@example.com)"
+            value={inpSignUpValue.email}
+            onChange={onChangeSignUp}
           />
+          {inpSignUpError.email ? inpSignUpError.email : ""}
           <input
             type="password"
             name="password"
             placeholder="비밀번호를 입력해 주세요"
+            value={inpSignUpValue.password}
+            onChange={onChangeSignUp}
           />
+          {inpSignUpError.password ? inpSignUpError.password : ""}
           <input
             type="password"
             name="passwordRe"
             placeholder="비밀번호를 다시 입력해 주세요"
+            value={inpSignUpValue.passwordRe}
+            onChange={onChangeSignUp}
           />
+          {inpSignUpError.passwordRe ? inpSignUpError.passwordRe : ""}
           <button type="submit" onClick={() => setIsLogin(false)}>
             회원가입
           </button>
