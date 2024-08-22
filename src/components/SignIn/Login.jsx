@@ -3,6 +3,7 @@ import * as Styled from "./Login.styled.js";
 import { isModal } from "../../RTK/modalSlice";
 import kakao from "../../assets/ico_kakao_logo.png";
 import { useState } from "react";
+import { client } from "../../Client/client.js";
 
 export default function Login() {
   const modal = useSelector((state) => state.modal);
@@ -90,7 +91,14 @@ export default function Login() {
   const disabled =
     Object.values(loginValue).every((el) => el !== "") &&
     Object.values(loginError).every((el) => el === "");
-  console.log("로그인 disabled: ", disabled);
+
+  // 로그인 요청
+  const fetchLoginPost = async () => {
+    await client.post("/auth/v1/signup", {
+      email: inpSignUpValue.email,
+      password: inpSignUpValue.password,
+    });
+  };
 
   return (
     <>
@@ -104,7 +112,12 @@ export default function Login() {
             <h1>
               Min<span style={{ color: "red" }}>Flix</span>
             </h1>
-            <Styled.LoginFrom onSubmit={(e) => e.preventDefault()}>
+            <Styled.LoginFrom
+              onSubmit={(e) => {
+                e.preventDefault();
+                fetchLoginPost();
+              }}
+            >
               <div>
                 <input
                   type="email"
@@ -154,6 +167,8 @@ export default function Login() {
 }
 
 function SignUp({ setIsLogin, handleClose }) {
+  const dispatch = useDispatch();
+
   const [inpSignUpValue, setInpSignUpValue] = useState({
     nickname: "",
     email: "",
@@ -261,21 +276,69 @@ function SignUp({ setIsLogin, handleClose }) {
     };
   };
 
+  const fetchSignUpPost = async () => {
+    // 회원가입 신청
+    try {
+      const response = await client.post("/auth/v1/signup", {
+        email: inpSignUpValue.email,
+        password: inpSignUpValue.password,
+      });
+
+      const { data, error } = response;
+
+      // 혹시나 에러뜨면 캐치
+      if (error) {
+        throw new Error(`회원가입 에러: ${error.message}`);
+      }
+      // userId => uuid로 저장됨
+      const userId = data.user.id;
+
+      // 프로필 테이블에 따로 데이터 저장
+      const profileResponse = await client.post("/rest/v1/profiles", {
+        id: userId,
+        nickname: inpSignUpValue.nickname,
+        profile_image: "",
+        bio: "",
+      });
+
+      console.log("userId: ", userId);
+      console.log("회원가입 성공: ", response);
+      console.log("프로필 저장: ", profileResponse);
+      // 로컬스토리지 액세스 토큰, 리프레시 토큰 저장
+      const { access_token, refresh_token } = response.data;
+      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("refresh_token", access_token);
+
+      // 모달 상태 변경, 로그인 상태 업데이트 (전역)
+      dispatch(isModal(false));
+      // 로그인 상태 조건에 따라 헤더 로그인 버튼 컴포넌트 유저 UI 변경
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // 버튼 활성화 조건
   const disabled =
     Object.values(inpSignUpValue).every((el) => el !== "") &&
     Object.values(inpSignUpError).every((el) => el === "");
-  console.log("회원가입 disabled: ", disabled);
 
   return (
-    <Styled.Wrapper className="login_container" onClick={handleClose}>
-      <Styled.Inner
-        className="login_inner"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <Styled.Wrapper
+      className="login_container"
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+    >
+      <Styled.Inner className="login_inner" onClick={(e) => e.stopPropagation}>
         <h1>
           Min<span style={{ color: "red" }}>Flix</span>
         </h1>
-        <Styled.LoginFrom onSubmit={(e) => e.preventDefault()}>
+        <Styled.LoginFrom
+          onSubmit={(e) => {
+            e.preventDefault();
+            fetchSignUpPost();
+          }}
+        >
           <div>
             <input
               type="text"
