@@ -1,10 +1,23 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Box = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
   padding-top: 94px;
+
+  ${({ $isLoading }) => {
+    switch ($isLoading) {
+      case false:
+        return css`
+          display: none;
+        `;
+      case true:
+        return css`
+          display: block;
+        `;
+    }
+  }}
 
   p {
     position: absolute;
@@ -15,7 +28,9 @@ export const Box = styled.div`
 `;
 
 export const Loading = styled.span`
-  position: relative;
+  position: fixed;
+  top: 94px;
+  width: 100%;
   overflow: hidden;
   display: block;
   height: 4px;

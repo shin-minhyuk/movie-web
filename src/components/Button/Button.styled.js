@@ -9,8 +9,8 @@ export const G_Button = styled.button`
       case "modal":
         return css`
           width: 100%;
-          padding: 10px 0;
-          border-radius: 4px;
+          padding: 16px 0;
+          border-radius: 6px;
         `;
       case "header":
         return css`

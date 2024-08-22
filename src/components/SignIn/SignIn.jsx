@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-
-import * as Styled from "./Login.styled";
+import * as Styled from "./SignIn.styled.js";
 import { modalSlice } from "../../RTK/modalSlice";
 import Button from "../Button";
+import kakao from "../../assets/ico_kakao_logo.png";
 
 export default function Login() {
   const modal = useSelector((state) => state.modal);
@@ -35,13 +35,12 @@ export default function Login() {
                 name="password"
                 autoComplete="off"
               />
-              <Button children="로그인" type="modal" color="red"></Button>
-              <Button
-                onClick={() => alert("작동")}
-                children="회원가입"
-                type="modal"
-                color="white"
-              ></Button>
+              <button children="로그인" type="modal" color="red"></button>
+              <Styled.Kakao>
+                <img src={kakao} />
+                카카오로 3초 만에 시작하기
+              </Styled.Kakao>
+              <button children="회원가입" type="modal" color="white"></button>
             </Styled.LoginFrom>
           </Styled.Inner>
         </Styled.Wrapper>

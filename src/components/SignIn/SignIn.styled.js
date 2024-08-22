@@ -19,7 +19,7 @@ export const Inner = styled.div`
   background-color: rgb(19, 19, 19);
   width: 60%;
   max-width: 580px;
-  height: 40%;
+
   padding: 24px;
   gap: 20px;
 
@@ -51,4 +51,17 @@ export const LoginFrom = styled.form`
     &::placeholder {
     }
   }
+`;
+
+export const Kakao = styled.button`
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: #fee500;
+  color: rgba(0, 0, 0, 0.85);
+  border-radius: 6px;
+  padding: 16px 0;
+  font-weight: 600;
 `;

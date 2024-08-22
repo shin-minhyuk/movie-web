@@ -1,10 +1,14 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "../styles/home.scss";
 import Card from "../components/Card";
 import { useState } from "react";
+import { globalLoadingSlice } from "../RTK/globalLoadingSlice";
+import GlobalLoading from "../components/GlobalLoading";
 
 function Home() {
   const { data, loading } = useSelector((state) => state.movie);
+  const { globalLoading } = useSelector((state) => state.globalLoading);
+  const dispatch = useDispatch();
   const [page, setPage] = useState(1);
 
   const PER_ITEMS = 4;
@@ -22,10 +26,6 @@ function Home() {
       return newPage;
     });
   };
-
-  if (loading) {
-    return <div>Loading</div>;
-  }
 
   return (
     <div className="home_container">

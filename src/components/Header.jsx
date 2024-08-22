@@ -1,10 +1,27 @@
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { modalSlice } from "../RTK/modalSlice";
-import Button from "./Button";
 import Logo from "./Logo";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import Button from "./Button";
 
 export default function Header() {
+  const [theme, setTheme] = useState("dark");
+  const dispatch = useDispatch();
+
+  const themeToggle = () => {
+    const html = document.documentElement;
+
+    if (html.classList.contains("ui-white")) {
+      html.classList.remove("ui-white");
+      setTheme("white");
+    } else {
+      html.classList.add("ui-white");
+      setTheme("dark");
+    }
+    console.log(html.classList);
+  };
+
   return (
     <>
       <header className="header_container">
@@ -17,7 +34,9 @@ export default function Header() {
             <Link className="header_nav_link" to="/search">
               검색
             </Link>
-            <button className="header_theme_color">다크모드</button>
+            <button onClick={themeToggle} className="header_theme_color">
+              다크모드
+            </button>
           </div>
           <div className="header_auth">
             <Button

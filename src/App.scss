@@ -1,3 +1,23 @@
+// 다크모드 라이트모드 색상 설정
+:root {
+  --background-color: #000;
+  --color: #fff;
+  --btn-bg-red: #ff0000;
+  --btn-bg-color: #fff;
+}
+
+.ui-white {
+  --background-color: #fff;
+  --color: #000;
+  --card-bg-color: #fff;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--color);
+  transition: 0.3s;
+}
+
 .App {
   position: relative;
 }
@@ -6,7 +26,6 @@
   position: fixed;
   z-index: 999;
   width: 100%;
-  color: white;
 
   .header_inner {
     width: 100%;
@@ -22,11 +41,11 @@
 
       .header_nav_link {
         text-decoration: none;
-        color: #fff;
+        // color: #fff;
         padding: 6px 16px;
 
         &:hover {
-          background-color: red;
+          // background-color: red;
           border-radius: 4px;
           transition: 0.3s;
         }
@@ -35,7 +54,7 @@
       .header_theme_color {
         border: none;
         background-color: none;
-        color: #fff;
+
         background-color: transparent;
         padding: 6px 16px;
         cursor: pointer;
