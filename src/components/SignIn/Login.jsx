@@ -90,7 +90,7 @@ export default function Login() {
   const disabled =
     Object.values(loginValue).every((el) => el !== "") &&
     Object.values(loginError).every((el) => el === "");
-  console.log("disabled: ", disabled);
+  console.log("로그인 disabled: ", disabled);
 
   return (
     <>
@@ -105,28 +105,36 @@ export default function Login() {
               Min<span style={{ color: "red" }}>Flix</span>
             </h1>
             <Styled.LoginFrom onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                placeholder="이메일을 작성해주세요"
-                name="email"
-                autoComplete="off"
-                value={loginValue.email}
-                onChange={onChangeLogin}
-              />
-              {loginError.email ? loginError.email : null}
-              <input
-                placeholder="비밀번호를 작성해주세요"
-                type="password"
-                name="password"
-                autoComplete="off"
-                onChange={onChangeLogin}
-              />
-              {loginError.password ? loginError.password : null}
+              <div>
+                <input
+                  type="email"
+                  placeholder="이메일을 작성해주세요"
+                  name="email"
+                  autoComplete="off"
+                  value={loginValue.email}
+                  onChange={onChangeLogin}
+                  className={loginError.email ? "error" : null}
+                />
+                <p>{loginError.email ? loginError.email : null}</p>
+              </div>
+              <div>
+                <input
+                  placeholder="비밀번호를 작성해주세요"
+                  type="password"
+                  name="password"
+                  autoComplete="off"
+                  onChange={onChangeLogin}
+                  className={loginError.password ? "error" : null}
+                />
+                <p>{loginError.password ? loginError.password : null}</p>
+              </div>
               <button
                 disabled={!disabled}
-                style={{ backgroundColor: disabled ? null : "#999" }}
                 type="submit"
                 onClick={() => setIsLogin(true)}
+                style={{
+                  backgroundColor: disabled ? null : "#676767",
+                }}
               >
                 로그인
               </button>
@@ -134,7 +142,7 @@ export default function Login() {
                 <img src={kakao} />
                 카카오로 3초 만에 시작하기
               </Styled.Kakao>
-              <div onClick={() => setIsLogin(false)}>회원가입</div>
+              <span onClick={() => setIsLogin(false)}>회원가입</span>
             </Styled.LoginFrom>
           </Styled.Inner>
         </Styled.Wrapper>
@@ -184,7 +192,7 @@ function SignUp({ setIsLogin, handleClose }) {
       return Boolean(value);
     };
 
-    if (outputValue === "") {
+    if (outputValue(value, name) === "") {
       const fieldName =
         name === "nickname"
           ? "닉네임이"
@@ -195,43 +203,56 @@ function SignUp({ setIsLogin, handleClose }) {
           : name === "passwordRe"
           ? "비밀번호가"
           : "";
-
-      return `${fieldName} 입력되지 않았습니다`;
+      console.log("필드셋: ", fieldName);
+      return {
+        [name]: `${fieldName} 입력되지 않았습니다`,
+      };
     }
 
-    // 인풋값 조건부 에러출력
-    switch (name) {
-      case "nickname":
-        outputValue = (value) => {
-          // - 2자 이상 16자 이하, 영어 또는 숫자 또는 한글로 구성
-          // * 특이사항 : 한글 초성 및 모음은 허가하지 않는다.
-          const reg = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/;
-          return reg.test(value) ? "" : "닉네임이 올바르지 않습니다";
-        };
-        break;
-      case "email":
-        outputValue = (value) => {
-          const reg = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
-          return reg.test(value)
-            ? ""
-            : "이메일이 정해진 규칙에 올바르지 않습니다";
-        };
-        break;
-      case "password":
-        outputValue = (value) => {
-          const MIN_PASSWORD_COUNT = 5;
-          if (value.length > MIN_PASSWORD_COUNT) return "";
-          else return "비밀번호는 5자리 이상이어야 합니다";
-        };
-        break;
-      case "passwordRe":
-        outputValue = (value) => {
-          const MIN_PASSWORD_COUNT = 5;
-          if (value.length > MIN_PASSWORD_COUNT) return "";
-          else return "비밀번호는 5자리 이상이어야 합니다";
-        };
-        break;
-    }
+    if (outputValue)
+      // 인풋값 조건부 에러출력
+      switch (name) {
+        case "nickname":
+          outputValue = (value) => {
+            // - 2자 이상 16자 이하, 영어 또는 숫자 또는 한글로 구성
+            // * 특이사항 : 한글 초성 및 모음은 허가하지 않는다.
+            const reg = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/;
+            return reg.test(value) ? "" : "닉네임이 올바르지 않습니다";
+          };
+          break;
+        case "email":
+          outputValue = (value) => {
+            const reg = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+            return reg.test(value)
+              ? ""
+              : "이메일이 정해진 규칙에 올바르지 않습니다";
+          };
+          break;
+        case "password":
+          outputValue = (value) => {
+            const MIN_PASSWORD_COUNT = 6;
+            if (value.length >= MIN_PASSWORD_COUNT) return "";
+            else
+              return `비밀번호는 ${MIN_PASSWORD_COUNT}자리 이상이어야 합니다`;
+          };
+          break;
+        case "passwordRe":
+          outputValue = (value) => {
+            const MIN_PASSWORD_COUNT = 6;
+            if (
+              value.length >= MIN_PASSWORD_COUNT &&
+              value !== inpSignUpValue.password
+            ) {
+              return `비밀번호가 일치하지 않습니다`;
+            } else if (value.length >= MIN_PASSWORD_COUNT) {
+              return "";
+            } else {
+              return `비밀번호는 ${MIN_PASSWORD_COUNT}자리 이상이어야 합니다`;
+            }
+          };
+          break;
+      }
+    // 비밀번호가 같지 않을 경우 예외처리
 
     const errorMessage = outputValue(value);
     console.log("에러: ", errorMessage);
@@ -239,6 +260,11 @@ function SignUp({ setIsLogin, handleClose }) {
       [name]: errorMessage,
     };
   };
+
+  const disabled =
+    Object.values(inpSignUpValue).every((el) => el !== "") &&
+    Object.values(inpSignUpError).every((el) => el === "");
+  console.log("회원가입 disabled: ", disabled);
 
   return (
     <Styled.Wrapper className="login_container" onClick={handleClose}>
@@ -250,46 +276,65 @@ function SignUp({ setIsLogin, handleClose }) {
           Min<span style={{ color: "red" }}>Flix</span>
         </h1>
         <Styled.LoginFrom onSubmit={(e) => e.preventDefault()}>
-          <input
-            type="text"
-            name="nickname"
-            placeholder="닉네임을 입력해주세요"
-            value={inpSignUpValue.nickname}
-            onChange={onChangeSignUp}
-          />
-          {inpSignUpError.nickname ? inpSignUpError.nickname : ""}
-          <input
-            type="email"
-            name="email"
-            placeholder="이메일 (example@example.com)"
-            value={inpSignUpValue.email}
-            onChange={onChangeSignUp}
-          />
-          {inpSignUpError.email ? inpSignUpError.email : ""}
-          <input
-            type="password"
-            name="password"
-            placeholder="비밀번호를 입력해 주세요"
-            value={inpSignUpValue.password}
-            onChange={onChangeSignUp}
-          />
-          {inpSignUpError.password ? inpSignUpError.password : ""}
-          <input
-            type="password"
-            name="passwordRe"
-            placeholder="비밀번호를 다시 입력해 주세요"
-            value={inpSignUpValue.passwordRe}
-            onChange={onChangeSignUp}
-          />
-          {inpSignUpError.passwordRe ? inpSignUpError.passwordRe : ""}
-          <button type="submit" onClick={() => setIsLogin(false)}>
+          <div>
+            <input
+              type="text"
+              name="nickname"
+              placeholder="닉네임을 입력해주세요"
+              value={inpSignUpValue.nickname}
+              onChange={onChangeSignUp}
+              className={inpSignUpError.nickname ? "error" : null}
+            />
+            <p>{inpSignUpError.nickname ? inpSignUpError.nickname : ""}</p>
+          </div>
+          <div>
+            <input
+              type="email"
+              name="email"
+              placeholder="이메일 (example@example.com)"
+              value={inpSignUpValue.email}
+              onChange={onChangeSignUp}
+              className={inpSignUpError.email ? "error" : null}
+            />
+            <p>{inpSignUpError.email ? inpSignUpError.email : ""}</p>
+          </div>
+          <div>
+            <input
+              type="password"
+              name="password"
+              placeholder="비밀번호를 입력해 주세요"
+              value={inpSignUpValue.password}
+              onChange={onChangeSignUp}
+              className={inpSignUpError.password ? "error" : null}
+            />
+            <p>{inpSignUpError.password ? inpSignUpError.password : ""}</p>
+          </div>
+          <div>
+            <input
+              type="password"
+              name="passwordRe"
+              placeholder="비밀번호를 다시 입력해 주세요"
+              value={inpSignUpValue.passwordRe}
+              onChange={onChangeSignUp}
+              className={inpSignUpError.passwordRe ? "error" : null}
+            />
+            <p>{inpSignUpError.passwordRe ? inpSignUpError.passwordRe : ""}</p>
+          </div>
+          <button
+            disabled={!disabled}
+            type="submit"
+            onClick={() => setIsLogin(false)}
+            style={{
+              backgroundColor: disabled ? null : "#676767",
+            }}
+          >
             회원가입
           </button>
           <Styled.Kakao>
             <img src={kakao} />
             카카오로 3초 만에 시작하기
           </Styled.Kakao>
-          <div onClick={() => setIsLogin(true)}>로그인</div>
+          <span onClick={() => setIsLogin(true)}>로그인</span>
         </Styled.LoginFrom>
       </Styled.Inner>
     </Styled.Wrapper>

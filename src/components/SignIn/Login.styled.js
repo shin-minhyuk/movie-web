@@ -41,16 +41,33 @@ export const LoginFrom = styled.form`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  gap: 20px;
+  gap: 24px;
 
-  input {
+  div {
     width: 100%;
-    padding: 16px 20px;
-    border-radius: 6px;
-    background-color: transparent;
-    border: 1px solid #444;
 
-    &::placeholder {
+    input {
+      width: 100%;
+      padding: 16px 20px;
+      border-radius: 6px;
+      background-color: transparent;
+      border: 1px solid #444;
+
+      &:hover {
+        outline: 1.5px solid #fff;
+      }
+
+      &:focus {
+        outline: 1.5px solid #5fbb73;
+      }
+    }
+
+    input.error {
+      border: 1px solid #f44336;
+
+      &:focus {
+        outline: 1.5px solid #f44336;
+      }
     }
   }
 
@@ -61,15 +78,24 @@ export const LoginFrom = styled.form`
     padding: 12px 0;
   }
 
-  div {
+  span {
     width: 100%;
     border-radius: 6px;
     text-align: center;
     padding: 12px 0;
+    cursor: pointer;
 
     &:hover {
-      background-color: rgba(255, 0, 0, 0.04);
+      background-color: rgba(255, 0, 0, 0.1);
     }
+  }
+
+  p {
+    width: 100%;
+    font-size: 12px;
+    text-align: left;
+    margin: 3px 20px 0;
+    color: #f44336;
   }
 `;
 
