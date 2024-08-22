@@ -1,6 +1,7 @@
 .detail_container {
   position: relative;
   width: 100%;
+  margin: 0 auto;
 
   .detail_backImage_box {
     position: relative;
@@ -21,11 +22,16 @@
 
   .detail_main {
     position: absolute;
-    top: 100px;
+    max-width: 1366px;
+    top: 230px;
+    width: 100%;
+    left: 50%;
+    transform: translate(-50%);
+    margin: auto;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    padding: 16px;
-    gap: 100px;
+    gap: 60px;
 
     .detail_sec {
       display: flex;
@@ -46,8 +52,8 @@
         width: 60%;
 
         .detail_sec_title {
-          font-size: 3rem;
-          font-weight: 600;
+          font-size: 64px;
+          font-weight: 900;
         }
 
         .detail_sec_position {
@@ -86,10 +92,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  border: 2px solid rgb(32, 190, 98);
+  border: 4px solid rgb(32, 190, 98);
 
   span {
     font-size: 12px;

@@ -1,16 +1,19 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as Styled from "./Button.styled";
-import { modalSlice } from "../../RTK/modalSlice";
+import { isModal } from "../../RTK/modalSlice";
 
-export default function Button({ children, type = "header", color = "red" }) {
-  const modal = useSelector((state) => state.modal);
+export default function Button({
+  children,
+  position = "header",
+  color = "red",
+}) {
   const dispatch = useDispatch();
 
   return (
     <>
       <Styled.G_Button
-        onClick={() => dispatch(modalSlice.actions.isModal(true))}
-        type={type}
+        onClick={() => dispatch(isModal(true))}
+        position={position}
         color={color}
       >
         {children}

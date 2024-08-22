@@ -4,8 +4,8 @@ export const G_Button = styled.button`
   font-weight: 600;
   cursor: pointer;
 
-  ${({ type }) => {
-    switch (type) {
+  ${({ position }) => {
+    switch (position) {
       case "modal":
         return css`
           width: 100%;

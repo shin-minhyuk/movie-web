@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import { modalSlice } from "../RTK/modalSlice";
 import Logo from "./Logo";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import Button from "./Button";
+import { isModal } from "../RTK/modalSlice";
 
 export default function Header() {
   const [theme, setTheme] = useState("dark");
@@ -15,12 +15,15 @@ export default function Header() {
     if (html.classList.contains("ui-white")) {
       html.classList.remove("ui-white");
       setTheme("white");
+      console.log("테마: ", theme);
     } else {
       html.classList.add("ui-white");
       setTheme("dark");
+      console.log("테마: ", theme);
     }
-    console.log(html.classList);
   };
+
+  const [isLogged, setIsLogged] = useState(false);
 
   return (
     <>
@@ -39,14 +42,17 @@ export default function Header() {
             </button>
           </div>
           <div className="header_auth">
-            <Button
-              onClick={() => {
-                dispatch(modalSlice.actions.isModal(true));
-              }}
-            >
-              로그인
-            </Button>
-            <Button>회원가입</Button>
+            {isLogged ? null : (
+              <>
+                <Button
+                  onClick={() => {
+                    dispatch(isModal(true));
+                  }}
+                >
+                  로그인
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </header>

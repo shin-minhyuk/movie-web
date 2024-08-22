@@ -9,7 +9,7 @@ import { fetchMovieDataById } from "./RTK/thunk";
 import Header from "./components/Header";
 import GlobalLoading from "./components/GlobalLoading";
 import { globalLoadingSlice } from "./RTK/globalLoadingSlice";
-import SignIn from "./components/SignIn";
+import Login from "./components/SignIn/Login";
 
 function App() {
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ function App() {
         <Route path="/search" element={<Search />}></Route>
         <Route path="/detail/:id" element={<Detail />}></Route>
       </Routes>
-      <SignIn />
+      <Login />
     </div>
   );
 }

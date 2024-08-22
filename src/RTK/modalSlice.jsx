@@ -1,11 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const modalSlice = createSlice({
+const modalSlice = createSlice({
   name: "modal",
-  initialState: false,
+  initialState: {
+    isModal: false,
+  },
   reducers: {
     isModal(state, action) {
-      return action.payload;
+      return { ...state, isModal: action.payload };
     },
   },
 });
+
+export const { actions, reducer } = modalSlice;
+export const { isModal } = actions;
+export default reducer;
