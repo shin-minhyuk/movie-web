@@ -11,9 +11,14 @@ export default function Login() {
 
   const handleClose = () => {
     dispatch(isModal(false));
-    // 모달창 내렸을 때, 값 초기화
+    // 모달창 내렸을 때, 로그인 상태값 전부 초기화
     loginValue.email = "";
     loginValue.password = "";
+    loginErrorValue.email = "";
+    loginErrorValue.password = "";
+
+    // basic isLogin value 초기화
+    setIsLogin(true);
   };
 
   const [loginValue, setLoginValue] = useState({
@@ -25,7 +30,7 @@ export default function Login() {
     password: "",
   });
 
-  const onChange = (event) => {
+  const onChangeLogin = (event) => {
     const { value, name } = event.target;
 
     setLoginValue({
@@ -101,7 +106,7 @@ export default function Login() {
                 name="email"
                 autoComplete="off"
                 value={loginValue.email}
-                onChange={onChange}
+                onChange={onChangeLogin}
               />
               {loginErrorValue.email ? loginErrorValue.email : null}
               <input
@@ -109,7 +114,7 @@ export default function Login() {
                 type="password"
                 name="password"
                 autoComplete="off"
-                onChange={onChange}
+                onChange={onChangeLogin}
               />
               {loginErrorValue.password ? loginErrorValue.password : null}
               <button type="submit" onClick={() => setIsLogin(true)}>
@@ -137,6 +142,8 @@ function SignUp({ setIsLogin, handleClose }) {
     password: "",
     passwordRe: "",
   });
+
+  const onChangeSignUp = () => {};
 
   return (
     <Styled.Wrapper className="login_container" onClick={handleClose}>
