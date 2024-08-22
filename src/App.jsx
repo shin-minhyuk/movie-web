@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Detail from "./pages/Detail";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchMovieDataById } from "./RTK/thunk";
 import axios from "axios";
 import Login from "./components/Login";

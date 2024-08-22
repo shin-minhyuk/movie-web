@@ -1,12 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { modalSlice } from "../RTK/modalSlice";
+import Button from "./Button";
 
 export default function Header() {
-  const modal = useSelector((state) => state.modal);
-  const dispatch = useDispatch();
-  console.log(modal);
-
   return (
     <>
       <header className="header_container">
@@ -24,14 +21,14 @@ export default function Header() {
             <button className="header_theme_color">다크모드</button>
           </div>
           <div className="header_auth">
-            <button
+            <Button
               onClick={() => {
                 dispatch(modalSlice.actions.isModal(true));
               }}
             >
               로그인
-            </button>
-            <button>회원가입</button>
+            </Button>
+            <Button>회원가입</Button>
           </div>
         </div>
       </header>
