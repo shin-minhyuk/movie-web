@@ -13,7 +13,7 @@ export default function Button({
     <>
       <Styled.G_Button
         onClick={() => dispatch(isModal(true))}
-        position={position}
+        $position={position}
         color={color}
       >
         {children}

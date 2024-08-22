@@ -18,7 +18,7 @@ export const Inner = styled.div`
 
   flex-direction: column;
   align-items: center;
-  background-color: var(--background-color);
+  background-color: var(--modal-bg-color);
   width: 60%;
   max-width: 580px;
 
@@ -51,6 +51,24 @@ export const LoginFrom = styled.form`
     border: 1px solid #444;
 
     &::placeholder {
+    }
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    border-radius: 6px;
+    background-color: red;
+    padding: 12px 0;
+  }
+
+  div {
+    width: 100%;
+    border-radius: 6px;
+    text-align: center;
+    padding: 12px 0;
+
+    &:hover {
+      background-color: rgba(255, 0, 0, 0.04);
     }
   }
 `;
