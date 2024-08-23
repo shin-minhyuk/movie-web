@@ -17,8 +17,8 @@
 }
 
 body {
-  background-color: var(--background-color);
-  color: var(--color);
+  background-color: var(--background-color) !important;
+  color: var(--color) !important;
   transition: 0.3s;
 }
 

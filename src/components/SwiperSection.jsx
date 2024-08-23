@@ -10,13 +10,13 @@ import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 import Card from "./Card";
 
-export default function SwiperSection({ movies }) {
+export default function SwiperSection({ movies, title }) {
   return (
     <>
       <div className="card_container">
         <div>
           <div className="titme_box">
-            <h1 className="text-[24px] ">현재 상영중</h1>
+            <h1 className="text-[24px] ">{title}</h1>
             <div className="bg-[red] w-[100px] h-[5px]"></div>
           </div>
           <Swiper

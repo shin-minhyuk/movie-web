@@ -7,6 +7,7 @@ import { isModal } from "../RTK/modalSlice";
 
 export default function Header() {
   const [theme, setTheme] = useState("dark");
+  const [isLogged, setIsLogged] = useState(false);
   const dispatch = useDispatch();
 
   const themeToggle = () => {
@@ -22,8 +23,6 @@ export default function Header() {
       console.log("테마: ", theme);
     }
   };
-
-  const [isLogged, setIsLogged] = useState(false);
 
   return (
     <>

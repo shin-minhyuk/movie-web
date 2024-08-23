@@ -24,10 +24,10 @@ function Home() {
         <SwiperMainSection filteredData={now_playing} />
       </div>
       <div className="home_inner">
-        <SwiperSection movies={now_playing} />
-        <SwiperSection movies={top_rated} />
-        <SwiperSection movies={upcoming} />
-        <SwiperSection movies={popular} />
+        <SwiperSection movies={now_playing} title={"현재 상영중"} />
+        <SwiperSection movies={top_rated} title={"랭킹 TOP 20"} />
+        <SwiperSection movies={upcoming} title={"개봉 예정"} />
+        <SwiperSection movies={popular} title={"인기순"} />
       </div>
     </main>
   );
