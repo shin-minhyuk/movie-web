@@ -1,14 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import "../styles/home.scss";
 import Card from "../components/Card";
-import { useState } from "react";
-import { globalLoadingSlice } from "../RTK/globalLoadingSlice";
-import GlobalLoading from "../components/GlobalLoading";
+import { useEffect, useState } from "react";
+import { clientMovie } from "../client/clientMovie";
 
 function Home() {
-  const { data, loading } = useSelector((state) => state.movie);
-  const { globalLoading } = useSelector((state) => state.globalLoading);
-  const dispatch = useDispatch();
+  const { data } = useSelector((state) => state.movie);
   const [page, setPage] = useState(1);
 
   const PER_ITEMS = 4;
@@ -16,6 +13,7 @@ function Home() {
   const MAX_PAGES = Math.ceil(MAX_ITEMS / PER_ITEMS);
   const startPageNumber = (page - 1) * PER_ITEMS;
 
+  // add more movielists
   const onClick = () => {
     setPage((prev) => {
       const newPage = prev + 1;
@@ -26,6 +24,39 @@ function Home() {
       return newPage;
     });
   };
+
+  // popular movie state
+  const [allMovies, setAllMovies] = useState([]);
+
+  // movie data fetch func
+  const fetchNowPlaying = async () =>
+    await clientMovie.get("/movie/now_playing");
+  const fetchPopular = async () => await clientMovie.get("/movie/popular");
+  const fetchTopRated = async () => await clientMovie.get("/movie/top_rated");
+  const fetchUpComing = async () => await clientMovie.get("/movie/upcoming");
+
+  // allmovies data fetch func
+  const fetchAllMovies = async () => {
+    try {
+      const response = await Promise.all([
+        fetchPopular(),
+        fetchNowPlaying(),
+        fetchTopRated(),
+        fetchUpComing(),
+      ]);
+
+      // 모든 영화 데이터 저장
+      setAllMovies(response);
+      console.log("모든영화 데이터: ", response);
+    } catch (err) {
+      console.error("패치 에러: ", err);
+    }
+  };
+
+  // 화면 로드시 실행
+  useEffect(() => {
+    fetchAllMovies();
+  }, []);
 
   return (
     <div className="home_container">
