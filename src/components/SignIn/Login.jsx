@@ -166,7 +166,7 @@ export default function Login() {
   );
 }
 
-function SignUp({ setIsLogin, handleClose }) {
+function SignUp({ setIsLogin }) {
   const dispatch = useDispatch();
 
   const [inpSignUpValue, setInpSignUpValue] = useState({
@@ -322,14 +322,26 @@ function SignUp({ setIsLogin, handleClose }) {
     Object.values(inpSignUpValue).every((el) => el !== "") &&
     Object.values(inpSignUpError).every((el) => el === "");
 
+  // 모달창 내렸을 때, 로그인 상태값 전부 초기화
+  const handleClose = () => {
+    dispatch(isModal(false));
+    inpSignUpValue.email = "";
+    inpSignUpValue.password = "";
+    inpSignUpValue.email = "";
+    inpSignUpValue.password = "";
+
+    // basic isLogin value 초기화
+    setIsLogin(true);
+  };
+
   return (
-    <Styled.Wrapper
-      className="login_container"
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
-    >
-      <Styled.Inner className="login_inner" onClick={(e) => e.stopPropagation}>
+    <Styled.Wrapper className="login_container" onClick={handleClose}>
+      <Styled.Inner
+        className="login_inner"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         <h1>
           Min<span style={{ color: "red" }}>Flix</span>
         </h1>
