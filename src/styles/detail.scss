@@ -33,16 +33,15 @@
     flex-direction: column;
     gap: 60px;
 
-    .detail_sec {
+    .detail_main_inner {
       display: flex;
-      gap: 20px;
-      height: 2000px;
+      gap: 36px;
 
-      .detail_sec_imgbox {
+      .detail_main_imgbox {
         width: 40%;
       }
 
-      .detail_sec_info {
+      .detail_main_info {
         display: flex;
         flex-direction: column;
         align-items: flex-start;

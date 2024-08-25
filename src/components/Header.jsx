@@ -1,21 +1,16 @@
-import { Link, useLocation, useParams } from "react-router-dom";
-import Logo from "./Logo";
+import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import Button from "./Button";
 import { isModal } from "../RTK/modalSlice";
+
+import Logo from "./Logo";
+import Button from "./Button";
+import Navigation from "./navigation";
 
 export default function Header() {
   const [theme, setTheme] = useState("dark");
   const [isLogged, setIsLogged] = useState(false);
   const dispatch = useDispatch();
-  const location = useLocation();
-  console.log(location);
-
-  const getNavBgColor = (path) => {
-    if (location.pathname.startsWith(path)) {
-    }
-  };
 
   const themeToggle = () => {
     const html = document.documentElement;
@@ -71,30 +66,7 @@ export default function Header() {
         <div className="header_inner">
           <nav className="header_nav">
             <Logo />
-            <Link
-              className={`header_nav_link ${
-                location.pathname === "/" ? "nav_bg_color" : ""
-              }`}
-              to="/"
-            >
-              홈
-            </Link>
-            <Link
-              className={`header_nav_link ${
-                location.pathname.startsWith("/detail") ? "nav_bg_color" : ""
-              }`}
-              to="/detail"
-            >
-              영화
-            </Link>
-            <Link
-              className={`header_nav_link ${
-                location.pathname.startsWith("/search") ? "nav_bg_color" : ""
-              }`}
-              to="/search"
-            >
-              검색
-            </Link>
+            <Navigation />
             <button onClick={themeToggle} className="header_theme_color">
               다크모드
             </button>

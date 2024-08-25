@@ -6,7 +6,7 @@ export default function DetailInfo({ filteredData }) {
   const [isFavorite, setIsFavorite] = useState(false);
 
   return (
-    <div className="detail_sec_info">
+    <div className="detail_main_info">
       <h1 className="detail_sec_title">
         {filteredData.title} {filteredData.release_date.slice(0, 4)}
       </h1>

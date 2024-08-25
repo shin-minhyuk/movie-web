@@ -11,6 +11,7 @@ import { globalLoadingSlice } from "./RTK/globalLoadingSlice";
 import Login from "./components/SignIn/Login";
 import { fetchMovieMain } from "./RTK/thunk";
 import DetailList from "./pages/DetailList";
+import Footer from "./components/footer";
 
 function App() {
   const dispatch = useDispatch();
@@ -55,6 +56,7 @@ function App() {
           <Login />
         </>
       )}
+      <Footer />
     </div>
   );
 }
