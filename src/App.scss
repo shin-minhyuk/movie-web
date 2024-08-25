@@ -33,6 +33,14 @@ body {
   height: 10px;
 }
 
+.nav_bg_color {
+  font-weight: 600;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 6px;
+  background-color: red;
+}
+
 .header_bg {
   background-color: var(--modal-bg-color);
 }
@@ -47,8 +55,7 @@ body {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    padding: 20px;
-    padding: 20px;
+    padding: 10px 24px;
 
     .header_nav {
       display: flex;
@@ -57,11 +64,10 @@ body {
 
       .header_nav_link {
         text-decoration: none;
-        // color: #fff;
         padding: 6px 16px;
+        cursor: pointer;
 
         &:hover {
-          // background-color: red;
           border-radius: 4px;
           transition: 0.3s;
         }

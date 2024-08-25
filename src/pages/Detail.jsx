@@ -6,7 +6,7 @@ import { clientMovie } from "../client/clientMovie";
 
 function Detail() {
   const { id } = useParams();
-  const { VITE_IMG_URL } = import.meta.env;
+  const { VITE_IMG_URL_ORIGINAL } = import.meta.env;
   const [filteredData, setFilteredData] = useState(null);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ function Detail() {
       <div className="detail_backImage_box">
         <img
           className="detail_backImage"
-          src={VITE_IMG_URL + filteredData.backdrop_path}
+          src={VITE_IMG_URL_ORIGINAL + filteredData.backdrop_path}
           alt={filteredData + " 이미지"}
         />
         <div className="detail_backImage_backdrop"></div>
@@ -44,7 +44,7 @@ function Detail() {
           <div className="detail_sec_imgbox">
             <img
               className="detail_sec_img"
-              src={VITE_IMG_URL + filteredData.poster_path}
+              src={VITE_IMG_URL_ORIGINAL + filteredData.poster_path}
               alt={filteredData.title}
             />
           </div>

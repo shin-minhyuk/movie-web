@@ -1,8 +1,4 @@
 .home_container {
-  // position: absolute;
-  // top: 0;
-  // width: 100%;
-  // height: 100%;
   margin: 0 auto;
 
   .home_inner {
@@ -34,12 +30,6 @@
 
   .card {
     position: relative;
-
-    img {
-      width: 100%;
-      height: 100%;
-      aspect-ratio: 8 / 12;
-    }
 
     &:hover {
       .card_backdrop {

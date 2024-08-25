@@ -11,9 +11,7 @@ export default function GlobalLoading() {
     if (globalLoading) {
       setIsloading(true);
     } else {
-      setTimeout(() => {
-        setIsloading(false);
-      }, 1000);
+      setIsloading(false);
     }
   }, [globalLoading]);
 

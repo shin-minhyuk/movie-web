@@ -8,7 +8,8 @@ import { useSelector } from "react-redux";
 
 import "../styles/detail.scss";
 
-const { VITE_IMG_URL } = import.meta.env;
+const { VITE_IMG_URL_ORIGINAL } = import.meta.env;
+console.log(VITE_IMG_URL_ORIGINAL);
 
 export default function SwiperMainSection() {
   const { now_playing } = useSelector((state) => state.movieMain);
@@ -21,7 +22,9 @@ export default function SwiperMainSection() {
             <div
               className="main_slide_backdrop"
               style={{
-                backgroundImage: `url(${VITE_IMG_URL + el.backdrop_path} )`,
+                backgroundImage: `url(${
+                  VITE_IMG_URL_ORIGINAL + el.backdrop_path
+                } )`,
               }}
             ></div>
             <div className="main_slide_backdrop_bg_left"></div>

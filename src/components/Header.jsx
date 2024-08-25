@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import Logo from "./Logo";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -9,6 +9,13 @@ export default function Header() {
   const [theme, setTheme] = useState("dark");
   const [isLogged, setIsLogged] = useState(false);
   const dispatch = useDispatch();
+  const location = useLocation();
+  console.log(location);
+
+  const getNavBgColor = (path) => {
+    if (location.pathname.startsWith(path)) {
+    }
+  };
 
   const themeToggle = () => {
     const html = document.documentElement;
@@ -24,7 +31,7 @@ export default function Header() {
     }
   };
 
-  // 헤더 옵저버 트리거
+  // 헤더 bg 옵저버 트리거
   useEffect(() => {
     const header_trigger = document.querySelector(".header_trigger");
     const header = document.querySelector(".header_container");
@@ -62,18 +69,36 @@ export default function Header() {
     <>
       <header className="header_container">
         <div className="header_inner">
-          <div className="header_nav">
+          <nav className="header_nav">
             <Logo />
-            <Link className="header_nav_link" to="/">
+            <Link
+              className={`header_nav_link ${
+                location.pathname === "/" ? "nav_bg_color" : ""
+              }`}
+              to="/"
+            >
               홈
             </Link>
-            <Link className="header_nav_link" to="/search">
+            <Link
+              className={`header_nav_link ${
+                location.pathname.startsWith("/detail") ? "nav_bg_color" : ""
+              }`}
+              to="/detail"
+            >
+              영화
+            </Link>
+            <Link
+              className={`header_nav_link ${
+                location.pathname.startsWith("/search") ? "nav_bg_color" : ""
+              }`}
+              to="/search"
+            >
               검색
             </Link>
             <button onClick={themeToggle} className="header_theme_color">
               다크모드
             </button>
-          </div>
+          </nav>
           <div className="header_auth">
             {isLogged ? null : (
               <>
