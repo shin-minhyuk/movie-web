@@ -14,9 +14,9 @@ export default function Card({ movie }) {
       <div className="card_backdrop "></div>
       <div className="card_more">
         <div className="card_more_average">
-          <span>{movie.vote_average.toString().slice(0, 4)}</span>
+          <span>{movie?.vote_average?.toString().slice(0, 4)}</span>
         </div>
-        <div>{movie.release_date.slice(0, 4)}</div>
+        <div>{movie?.release_date?.slice(0, 4)}</div>
         <div>{movie.title}</div>
       </div>
     </div>
