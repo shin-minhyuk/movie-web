@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Button from "./Button";
 import { isModal } from "../RTK/modalSlice";
@@ -23,6 +23,40 @@ export default function Header() {
       console.log("테마: ", theme);
     }
   };
+
+  // 헤더 옵저버 트리거
+  useEffect(() => {
+    const header_trigger = document.querySelector(".header_trigger");
+    const header = document.querySelector(".header_container");
+
+    if (!header_trigger) return console.log("헤더가 정의되지 않음");
+    else console.log(header_trigger);
+
+    let options = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0,
+    };
+
+    const callback = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          console.log("entering");
+          header.classList.remove("header_bg");
+        } else {
+          console.log("leaving");
+          header.classList.add("header_bg");
+        }
+      });
+    };
+
+    let observer = new IntersectionObserver(callback, options);
+    if (header_trigger) observer.observe(header_trigger);
+
+    return () => {
+      if (header_trigger) observer.unobserve(header_trigger);
+    };
+  }, []);
 
   return (
     <>
