@@ -9,6 +9,8 @@ function Detail() {
   const { VITE_IMG_URL_ORIGINAL } = import.meta.env;
   const [filteredData, setFilteredData] = useState(null);
 
+  window.scrollTo(0, 0);
+
   useEffect(() => {
     const fetchDetailById = async () => {
       try {

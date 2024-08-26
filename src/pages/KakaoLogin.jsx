@@ -32,7 +32,7 @@ function KakaoLogin() {
         );
 
         const { access_token, refresh_token } = response.data;
-        localStorage.setItem("TOKEN", access_token);
+        localStorage.setItem("KAKAO_ACCESS_TOKEN", access_token);
         navigate("/");
         dispatch(userSlice.actions.setIsUser(true));
         console.log(access_token);
@@ -55,11 +55,7 @@ function KakaoLogin() {
     }
   }, []);
 
-  return (
-    <>
-      <div>123123</div>
-    </>
-  );
+  return <></>;
 }
 
 export default KakaoLogin;

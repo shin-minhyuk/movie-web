@@ -4,6 +4,9 @@ import { isModal } from "../RTK/modalSlice";
 import Logo from "./Logo";
 import Button from "./Button";
 import Navigation from "./navigation";
+import dark from "../assets/dark-mode.svg";
+import white from "../assets/white-mode.svg";
+import userBasic from "../assets/user-basic.jpeg";
 
 export default function Header() {
   const [theme, setTheme] = useState("dark");
@@ -12,7 +15,6 @@ export default function Header() {
   console.log("사용자 정보: ", userData);
   const dispatch = useDispatch();
   const [isUserModal, setIsUserModal] = useState(false);
-  console.log(isUserModal);
 
   const themeToggle = () => {
     const html = document.documentElement;
@@ -59,6 +61,14 @@ export default function Header() {
     };
   }, []);
 
+  const handleSignOut = () => {
+    localStorage.removeItem("KAKAO_ACCESS_TOKEN");
+    localStorage.removeItem("KAKAO_REFRESH_TOKEN");
+    localStorage.removeItem("ACCESS_TOKEN");
+    localStorage.removeItem("REFRESH_TOKEN");
+    window.location.reload();
+  };
+
   return (
     <>
       <header className="header_container">
@@ -67,7 +77,7 @@ export default function Header() {
             <Logo />
             <Navigation />
             <button onClick={themeToggle} className="header_theme_color">
-              다크모드
+              <img src={theme === "dark" ? white : dark} alt="" />
             </button>
           </nav>
           <div className="header_auth">
@@ -78,12 +88,16 @@ export default function Header() {
                   className="header_user"
                 >
                   <img
-                    src={userData.profile_image}
+                    src={
+                      userData.profile_image === ""
+                        ? userBasic
+                        : userData.profile_image
+                    }
                     alt={`${userData.nickname}님의 프로필 이미지`}
                   />
                   <div>{userData.nickname}</div>
                 </div>
-                {isUserModal && (
+                {isUserModal ? (
                   <div
                     onClick={() => setIsUserModal(false)}
                     className="header_toggle_backdrop"
@@ -92,11 +106,12 @@ export default function Header() {
                       onClick={(e) => e.stopPropagation()}
                       className={`header_toggle ${isUserModal ? "show" : ""}`}
                     >
-                      <div>계정 설정</div>
-                      <div>로그아웃</div>
+                      <div>관심목록</div>
+                      <div>계정관리</div>
+                      <div onClick={() => handleSignOut()}>로그아웃</div>
                     </div>
                   </div>
-                )}
+                ) : null}
               </div>
             ) : (
               <>

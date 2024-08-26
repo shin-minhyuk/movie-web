@@ -13,13 +13,19 @@ export const userSlice = createSlice({
   },
 
   reducers: {
-    setIsUser(state, action) {
+    setIsUser: (state, action) => {
       state.isUser = action.payload;
     },
-    setKakaoLogin(state, action) {
+    setKakaoLogin: (state, action) => {
       state.userData.nickname = action.payload.properties.nickname;
       state.userData.email = action.payload.kakao_account.email;
       state.userData.profile_image = action.payload.properties.profile_image;
+    },
+    setLogin: (state, action) => {
+      state.userData.nickname = action.payload.nickname;
+      state.userData.email = action.payload.email;
+      state.userData.bio = action.payload.bio;
+      state.userData.profile_image = action.payload.profile_image;
     },
   },
 });

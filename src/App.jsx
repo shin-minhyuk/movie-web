@@ -21,7 +21,12 @@ function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const { globalLoading } = useSelector((state) => state.globalLoading);
-  const { userData } = useSelector((state) => state.user);
+  const { isUser, userData } = useSelector((state) => state.user);
+
+  // 메인페이지 데이터 패치
+  useEffect(() => {
+    dispatch(fetchMovieMain());
+  }, []);
 
   // global loading 수정해야함
   useEffect(() => {
@@ -40,33 +45,87 @@ function App() {
     }, 1000);
   }, [location.pathname]);
 
-  // 메인페이지 데이터 패치
+  const checkLocalStorageToken = () => {
+    const kakaoToken = localStorage.getItem("KAKAO_ACCESS_TOKEN");
+    const token = localStorage.getItem("ACCESS_TOKEN");
+
+    // switch (true)라고 하면, switch 문은 true 값을 기반으로 각 case의 조건을 평가
+    switch (true) {
+      case !!kakaoToken: // !!kakaoToken이 true일 때 실행
+        const fetchKakaoData = async () => {
+          const response = await axios.get(
+            "https://kapi.kakao.com/v2/user/me",
+            {
+              headers: {
+                Authorization: `Bearer ${access_token}`,
+              },
+            }
+          );
+          const userInfo = response.data;
+          dispatch(userSlice.actions.setKakaoLogin(userInfo));
+          dispatch(userSlice.actions.setIsUser(true));
+        };
+        fetchKakaoData();
+        break;
+      case !!token:
+        const fetchData = async () => {
+          const response = await axios.get(
+            "https://kapi.kakao.com/v2/user/me",
+            {
+              headers: {
+                Authorization: `Bearer ${access_token}`,
+              },
+            }
+          );
+          const userInfo = response.data;
+          dispatch(userSlice.actions.setKakaoLogin(userInfo));
+          dispatch(userSlice.actions.setIsUser(true));
+
+          const filteredData = await client.get(
+            `/rest/v1/profiles?id=eq.${user.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${access_token}`,
+              },
+            }
+          );
+          console.log("사용자 테이블정보: ", filteredData.data[0]);
+          dispatch(userSlice.actions.setLogin(filteredData.data[0]));
+          dispatch(userSlice.actions.setIsUser(true));
+        };
+        fetchData();
+
+        break;
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
-    dispatch(fetchMovieMain());
+    checkLocalStorageToken();
   }, []);
 
-  if (localStorage.getItem("TOKEN") === false) {
-    return;
-  } else {
-    dispatch(userSlice.actions.setIsUser(true));
+  //   if (
+  //     localStorage.getItem("KAKAO_ACCESS_TOKEN") ||
+  //     localStorage.getItem("ACCESS_TOKEN")
+  //   ) {
+  //     const access_token = localStorage.getItem("TOKEN");
 
-    const access_token = localStorage.getItem("TOKEN");
-
-    const fetchData = async () => {
-      const userResponse = await axios.get(
-        "https://kapi.kakao.com/v2/user/me",
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        }
-      );
-
-      const userInfo = userResponse.data;
-      dispatch(userSlice.actions.setKakaoLogin(userInfo));
-    };
-    fetchData();
-  }
+  //     const fetchData = async () => {
+  //       const userResponse = await axios.get(
+  //         "https://kapi.kakao.com/v2/user/me",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${access_token}`,
+  //           },
+  //         }
+  //       );
+  //       const userInfo = userResponse.data;
+  //       dispatch(userSlice.actions.setKakaoLogin(userInfo));
+  //       dispatch(userSlice.actions.setIsUser(true));
+  //     };
+  //     fetchData();
+  //   }
 
   return (
     <div className="App">

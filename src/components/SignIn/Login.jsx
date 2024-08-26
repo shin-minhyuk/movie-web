@@ -4,11 +4,21 @@ import { isModal } from "../../RTK/modalSlice";
 import kakao from "../../assets/ico_kakao_logo.png";
 import { useState } from "react";
 import { client } from "../../Client/client.js";
+import { userSlice } from "../../RTK/uesrSlice.jsx";
 
 export default function Login() {
   const modal = useSelector((state) => state.modal);
+  const { isUser, userData } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(true);
+  const [loginValue, setLoginValue] = useState({
+    email: "",
+    password: "",
+  });
+  const [loginError, setLoginError] = useState({
+    email: "",
+    password: "",
+  });
 
   const handleClose = () => {
     dispatch(isModal(false));
@@ -21,15 +31,6 @@ export default function Login() {
     // basic isLogin value 초기화
     setIsLogin(true);
   };
-
-  const [loginValue, setLoginValue] = useState({
-    email: "",
-    password: "",
-  });
-  const [loginError, setLoginError] = useState({
-    email: "",
-    password: "",
-  });
 
   const onChangeLogin = (event) => {
     const { value, name } = event.target;
@@ -50,11 +51,11 @@ export default function Login() {
   const valueValidation = (value, name) => {
     // 검사를 하려면 데이터를 받아와야함, value, name을 데이터로 받아와서 유효성 검사 진행
     // 검사를 거친 데이터를 담을 변수 생성
-    let outputValue = (value) => {
+    let inputValue = (value) => {
       return Boolean(value);
     };
 
-    if (outputValue(value) === false) {
+    if (inputValue(value) === false) {
       return {
         [name]: `${
           name === "email" ? "이메일이" : "비밀번호가"
@@ -64,13 +65,13 @@ export default function Login() {
 
     switch (name) {
       case "email":
-        outputValue = (value) => {
+        inputValue = (value) => {
           const reg = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
           return reg.test(value) ? "" : "이메일이 올바르지 않습니다";
         };
         break;
       case "password":
-        outputValue = (value) => {
+        inputValue = (value) => {
           const MIN_PASSWORD_COUNT = 5;
           if (value.length >= MIN_PASSWORD_COUNT) {
             return "";
@@ -81,7 +82,7 @@ export default function Login() {
         break;
     }
 
-    const errorMessage = outputValue(value);
+    const errorMessage = inputValue(value);
 
     return {
       [name]: errorMessage,
@@ -94,10 +95,35 @@ export default function Login() {
 
   // 로그인 요청
   const fetchLoginPost = async () => {
-    await client.post("/auth/v1/signup", {
-      email: inpSignUpValue.email,
-      password: inpSignUpValue.password,
-    });
+    try {
+      // 사용자 로그인 요청
+      const response = await client.post("/auth/v1/token?grant_type=password", {
+        email: loginValue.email,
+        password: loginValue.password,
+      });
+
+      // 로컬스토리지 토큰 저장
+      const { access_token, refresh_token, user } = response.data;
+      console.log(response);
+      localStorage.setItem("ACCESS_TOKEN", access_token);
+      localStorage.setItem("REFRESH_TOKEN", refresh_token);
+
+      // 서버에서 받아온 데이터의 id값으로 추가저장 해놓은 테이블의 사용자 데이터(테이블) 불러오기
+      const filteredData = await client.get(
+        `/rest/v1/profiles?id=eq.${user.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      console.log("사용자 테이블정보: ", filteredData.data[0]);
+      dispatch(userSlice.actions.setLogin(filteredData.data[0]));
+      dispatch(userSlice.actions.setIsUser(true));
+      dispatch(isModal(false));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -192,7 +218,9 @@ function SignUp({ setIsLogin }) {
       [name]: value,
     });
 
+    // // => 반환값이 객체 재귀함수 아마도?
     const error = signUpValidator(value, name);
+
     console.log(error);
 
     setInpSignUpError({
@@ -203,11 +231,11 @@ function SignUp({ setIsLogin }) {
 
   // 유효성 검사
   const signUpValidator = (value, name) => {
-    let outputValue = (value) => {
+    let inputValue = (value) => {
       return Boolean(value);
     };
 
-    if (outputValue(value, name) === "") {
+    if (inputValue(value, name) === "") {
       const fieldName =
         name === "nickname"
           ? "닉네임이"
@@ -224,11 +252,11 @@ function SignUp({ setIsLogin }) {
       };
     }
 
-    if (outputValue)
+    if (inputValue)
       // 인풋값 조건부 에러출력
       switch (name) {
         case "nickname":
-          outputValue = (value) => {
+          inputValue = (value) => {
             // - 2자 이상 16자 이하, 영어 또는 숫자 또는 한글로 구성
             // * 특이사항 : 한글 초성 및 모음은 허가하지 않는다.
             const reg = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/;
@@ -236,7 +264,7 @@ function SignUp({ setIsLogin }) {
           };
           break;
         case "email":
-          outputValue = (value) => {
+          inputValue = (value) => {
             const reg = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
             return reg.test(value)
               ? ""
@@ -244,7 +272,7 @@ function SignUp({ setIsLogin }) {
           };
           break;
         case "password":
-          outputValue = (value) => {
+          inputValue = (value) => {
             const MIN_PASSWORD_COUNT = 6;
             if (value.length >= MIN_PASSWORD_COUNT) return "";
             else
@@ -252,8 +280,9 @@ function SignUp({ setIsLogin }) {
           };
           break;
         case "passwordRe":
-          outputValue = (value) => {
+          inputValue = (value) => {
             const MIN_PASSWORD_COUNT = 6;
+            // 수정해보면 분명 더 이해하기 쉬운 코드가 있을것임
             if (
               value.length >= MIN_PASSWORD_COUNT &&
               value !== inpSignUpValue.password
@@ -269,7 +298,7 @@ function SignUp({ setIsLogin }) {
       }
     // 비밀번호가 같지 않을 경우 예외처리
 
-    const errorMessage = outputValue(value);
+    const errorMessage = inputValue(value);
     console.log("에러: ", errorMessage);
     return {
       [name]: errorMessage,
@@ -286,16 +315,19 @@ function SignUp({ setIsLogin }) {
 
       const { data, error } = response;
 
-      // 혹시나 에러뜨면 캐치
+      // 디버깅: 혹시나 상단 비동기 작업에서 에러가 나면 아래 코드를 실행하지 않고 바로 error 던지기
       if (error) {
         throw new Error(`회원가입 에러: ${error.message}`);
       }
+
       // userId => uuid로 저장됨
       const userId = data.user.id;
 
       // 프로필 테이블에 따로 데이터 저장
       const profileResponse = await client.post("/rest/v1/profiles", {
         id: userId,
+        email: inpSignUpValue.email,
+        password: inpSignUpValue.password,
         nickname: inpSignUpValue.nickname,
         profile_image: "",
         bio: "",
@@ -306,12 +338,14 @@ function SignUp({ setIsLogin }) {
       console.log("프로필 저장: ", profileResponse);
       // 로컬스토리지 액세스 토큰, 리프레시 토큰 저장
       const { access_token, refresh_token } = response.data;
-      localStorage.setItem("access_token", access_token);
-      localStorage.setItem("refresh_token", access_token);
+      localStorage.setItem("ACCESS_TOKEN", access_token);
+      localStorage.setItem("REFRESH_TOKEN", refresh_token);
 
       // 모달 상태 변경, 로그인 상태 업데이트 (전역)
       dispatch(isModal(false));
+
       // 로그인 상태 조건에 따라 헤더 로그인 버튼 컴포넌트 유저 UI 변경
+      dispatch(userSlice.actions.setIsUser(true));
     } catch (error) {
       console.log(error);
     }
