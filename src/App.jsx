@@ -16,6 +16,7 @@ import KakaoLogin from "./pages/KakaoLogin";
 import "./App.scss";
 import { userSlice } from "./RTK/uesrSlice";
 import axios from "axios";
+import { client } from "./Client/client";
 
 function App() {
   const dispatch = useDispatch();
@@ -51,7 +52,8 @@ function App() {
 
     // switch (true)라고 하면, switch 문은 true 값을 기반으로 각 case의 조건을 평가
     switch (true) {
-      case !!kakaoToken: // !!kakaoToken이 true일 때 실행
+      // kakao oauth 사용자의 경우
+      case !!kakaoToken:
         const fetchKakaoData = async () => {
           const response = await axios.get(
             "https://kapi.kakao.com/v2/user/me",
@@ -67,34 +69,28 @@ function App() {
         };
         fetchKakaoData();
         break;
+      // email login 사용자의 경우
       case !!token:
         const fetchData = async () => {
-          const response = await axios.get(
-            "https://kapi.kakao.com/v2/user/me",
-            {
-              headers: {
-                Authorization: `Bearer ${access_token}`,
-              },
-            }
-          );
-          const userInfo = response.data;
-          dispatch(userSlice.actions.setKakaoLogin(userInfo));
-          dispatch(userSlice.actions.setIsUser(true));
+          const { data } = await client.get("/auth/v1/user", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const { id } = data;
 
           const filteredData = await client.get(
-            `/rest/v1/profiles?id=eq.${user.id}`,
+            `/rest/v1/profiles?id=eq.${id}`,
             {
               headers: {
-                Authorization: `Bearer ${access_token}`,
+                Authorization: `Bearer ${token}`,
               },
             }
           );
-          console.log("사용자 테이블정보: ", filteredData.data[0]);
           dispatch(userSlice.actions.setLogin(filteredData.data[0]));
           dispatch(userSlice.actions.setIsUser(true));
         };
         fetchData();
-
         break;
       default:
         break;
@@ -104,28 +100,6 @@ function App() {
   useEffect(() => {
     checkLocalStorageToken();
   }, []);
-
-  //   if (
-  //     localStorage.getItem("KAKAO_ACCESS_TOKEN") ||
-  //     localStorage.getItem("ACCESS_TOKEN")
-  //   ) {
-  //     const access_token = localStorage.getItem("TOKEN");
-
-  //     const fetchData = async () => {
-  //       const userResponse = await axios.get(
-  //         "https://kapi.kakao.com/v2/user/me",
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${access_token}`,
-  //           },
-  //         }
-  //       );
-  //       const userInfo = userResponse.data;
-  //       dispatch(userSlice.actions.setKakaoLogin(userInfo));
-  //       dispatch(userSlice.actions.setIsUser(true));
-  //     };
-  //     fetchData();
-  //   }
 
   return (
     <div className="App">
