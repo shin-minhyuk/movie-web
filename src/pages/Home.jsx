@@ -10,13 +10,6 @@ function Home() {
   const { now_playing, popular, top_rated, upcoming, loading } = useSelector(
     (state) => state.movieMain
   );
-  console.log("메인: ", {
-    now_playing,
-    popular,
-    top_rated,
-    upcoming,
-    loading,
-  });
 
   return (
     <main className="home_container">

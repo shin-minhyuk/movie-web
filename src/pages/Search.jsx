@@ -6,13 +6,11 @@ import "../styles/search.scss";
 import "../styles/home.scss";
 
 function Search() {
-  /**
-   * input change가 발생할 때, 마지막 이벤트 기준으로 n초 뒤에 데이터를 불러와야함
-   * onChange 이벤트 => 검색을 할 때, url이 바뀜,
-   *  */
   const [value, setValue] = useState("");
   const [data, setData] = useState([]);
   const [category, setCategory] = useState("movie");
+
+  window.scrollTo(0, 0);
 
   const onChange = (event) => {
     const { value } = event.target;
@@ -23,8 +21,6 @@ function Search() {
     const id = setTimeout(() => {
       switch (category) {
         case "movie":
-          console.log("movie case 실행");
-
           clientMovie
             .get(`/search/movie?query=${value}`)
             .then((res) => {
@@ -35,8 +31,6 @@ function Search() {
           break;
 
         case "TV":
-          console.log("TV case 실행");
-
           clientMovie
             .get(`/search/tv?query=${value}`)
             .then((res) => {
@@ -45,9 +39,9 @@ function Search() {
             })
             .catch((err) => console.err(err));
           break;
-        case "actor":
-          console.log("actor case 실행");
 
+        // 배우, card 컴포넌트 프롭스 타입 추가 및 추가 작성 코드 필요
+        case "actor":
           clientMovie
             .get(`/search/person?query=${value}`)
             .then((res) => {

@@ -334,6 +334,14 @@ function SignUp({ setIsLogin }) {
     setIsLogin(true);
   };
 
+  const { VITE_KAKAO_REDIRECT_URI, VITE_KAKAO_REST_API_KEY } = import.meta.env;
+
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${VITE_KAKAO_REST_API_KEY}&redirect_uri=${VITE_KAKAO_REDIRECT_URI}&prompt=select_account`;
+
+  const handleKakaoLogin = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  };
+
   return (
     <Styled.Wrapper className="login_container" onClick={handleClose}>
       <Styled.Inner
@@ -405,7 +413,7 @@ function SignUp({ setIsLogin }) {
           >
             회원가입
           </button>
-          <Styled.Kakao>
+          <Styled.Kakao onClick={() => handleKakaoLogin()}>
             <img src={kakao} />
             카카오로 3초 만에 시작하기
           </Styled.Kakao>

@@ -1,26 +1,35 @@
 import { Route, Routes, useLocation } from "react-router-dom";
-import "./App.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchMovieMain } from "./RTK/thunk";
+import { globalLoadingSlice } from "./RTK/globalLoadingSlice";
+import Header from "./components/Header";
+import GlobalLoading from "./components/GlobalLoading";
+import Login from "./components/SignIn/Login";
+import Footer from "./components/footer";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Detail from "./pages/Detail";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Header from "./components/Header";
-import GlobalLoading from "./components/GlobalLoading";
-import { globalLoadingSlice } from "./RTK/globalLoadingSlice";
-import Login from "./components/SignIn/Login";
-import { fetchMovieMain } from "./RTK/thunk";
 import DetailList from "./pages/DetailList";
-import Footer from "./components/footer";
+import KakaoLogin from "./pages/KakaoLogin";
+
+import "./App.scss";
+import { userSlice } from "./RTK/uesrSlice";
+import axios from "axios";
 
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const { globalLoading } = useSelector((state) => state.globalLoading);
+  const { userData } = useSelector((state) => state.user);
 
   // global loading 수정해야함
   useEffect(() => {
-    if (location.pathname.startsWith("/search")) return;
+    if (
+      location.pathname.startsWith("/search") ||
+      location.pathname.startsWith("/auth/kakao/callback")
+    )
+      return;
 
     // 로딩중으로 바꾸고
     dispatch(globalLoadingSlice.actions.setGlobalLoading(true));
@@ -34,8 +43,30 @@ function App() {
   // 메인페이지 데이터 패치
   useEffect(() => {
     dispatch(fetchMovieMain());
-    console.log("실행됨");
   }, []);
+
+  if (localStorage.getItem("TOKEN") === false) {
+    return;
+  } else {
+    dispatch(userSlice.actions.setIsUser(true));
+
+    const access_token = localStorage.getItem("TOKEN");
+
+    const fetchData = async () => {
+      const userResponse = await axios.get(
+        "https://kapi.kakao.com/v2/user/me",
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+
+      const userInfo = userResponse.data;
+      dispatch(userSlice.actions.setKakaoLogin(userInfo));
+    };
+    fetchData();
+  }
 
   return (
     <div className="App">
@@ -52,6 +83,7 @@ function App() {
             <Route path="/search" element={<Search />}></Route>
             <Route path="/detail" element={<DetailList />}></Route>
             <Route path="/detail/:id" element={<Detail />}></Route>
+            <Route path="/auth/kakao/callback" element={<KakaoLogin />}></Route>
           </Routes>
           <Login />
         </>

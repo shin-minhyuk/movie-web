@@ -1,16 +1,18 @@
-import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { isModal } from "../RTK/modalSlice";
-
 import Logo from "./Logo";
 import Button from "./Button";
 import Navigation from "./navigation";
 
 export default function Header() {
   const [theme, setTheme] = useState("dark");
-  const [isLogged, setIsLogged] = useState(false);
+  const { isUser, userData } = useSelector((state) => state.user);
+  console.log("로그인: ", isUser);
+  console.log("사용자 정보: ", userData);
   const dispatch = useDispatch();
+  const [isUserModal, setIsUserModal] = useState(false);
+  console.log(isUserModal);
 
   const themeToggle = () => {
     const html = document.documentElement;
@@ -32,7 +34,6 @@ export default function Header() {
     const header = document.querySelector(".header_container");
 
     if (!header_trigger) return console.log("헤더가 정의되지 않음");
-    else console.log(header_trigger);
 
     let options = {
       root: null,
@@ -43,10 +44,8 @@ export default function Header() {
     const callback = (entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          console.log("entering");
           header.classList.remove("header_bg");
         } else {
-          console.log("leaving");
           header.classList.add("header_bg");
         }
       });
@@ -72,7 +71,34 @@ export default function Header() {
             </button>
           </nav>
           <div className="header_auth">
-            {isLogged ? null : (
+            {isUser ? (
+              <div className="header_user_container">
+                <div
+                  onClick={() => setIsUserModal(true)}
+                  className="header_user"
+                >
+                  <img
+                    src={userData.profile_image}
+                    alt={`${userData.nickname}님의 프로필 이미지`}
+                  />
+                  <div>{userData.nickname}</div>
+                </div>
+                {isUserModal && (
+                  <div
+                    onClick={() => setIsUserModal(false)}
+                    className="header_toggle_backdrop"
+                  >
+                    <div
+                      onClick={(e) => e.stopPropagation()}
+                      className={`header_toggle ${isUserModal ? "show" : ""}`}
+                    >
+                      <div>계정 설정</div>
+                      <div>로그아웃</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
               <>
                 <Button
                   onClick={() => {

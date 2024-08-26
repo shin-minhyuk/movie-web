@@ -6,6 +6,7 @@
   --btn-bg-color: #fff;
   --bg-color-opacity: rgba(0, 0, 0, 0.7);
   --modal-bg-color: rgb(19, 19, 19);
+  --header-user: #404040;
 }
 
 .ui-white {
@@ -14,6 +15,7 @@
   --card-bg-color: #fff;
   --bg-color-opacity: rgba(255, 255, 255, 0.7);
   --modal-bg-color: #fff;
+  --header-user: #fff;
 }
 
 body {
@@ -101,7 +103,66 @@ body {
     .header_auth {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 30px;
+
+      .header_user_container {
+        position: relative;
+
+        .header_user {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          width: 100%;
+          cursor: pointer;
+
+          img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+          }
+        }
+
+        .header_toggle_backdrop {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+
+          .header_toggle {
+            position: absolute;
+            right: 24px;
+            top: 68px;
+            width: 100px;
+            padding: 8px 16px;
+            text-align: center;
+            background-color: var(--header-user);
+            border-radius: 4px;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.4);
+            transition: 0.3s;
+            opacity: 0;
+
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+
+            div {
+              color: var(--color);
+              cursor: pointer;
+
+              &:hover {
+                opacity: 0.7;
+                transition: 0.3s;
+              }
+            }
+          }
+
+          .header_toggle.show {
+            opacity: 1;
+            pointer-events: auto;
+          }
+        }
+      }
     }
   }
 }
