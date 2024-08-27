@@ -8,7 +8,7 @@ import dark from "../assets/dark-mode.svg";
 import white from "../assets/white-mode.svg";
 import userBasic from "../assets/user-basic.jpeg";
 import { Link } from "react-router-dom";
-import Toast, { notify } from "./toast";
+import Toast, { notify } from "./Toast";
 
 export default function Header() {
   const [theme, setTheme] = useState("dark");

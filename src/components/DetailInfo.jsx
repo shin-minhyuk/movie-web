@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { client, clientProxy } from "../client/client";
 import { useDispatch, useSelector } from "react-redux";
 import { favoritesSlice } from "../RTK/uesrSlice";
-import Toast, { notify } from "./toast";
+import Toast, { notify } from "./Toast";
 
 export default function DetailInfo({ filteredData }) {
   const [isFavorite, setIsFavorite] = useState(false);
