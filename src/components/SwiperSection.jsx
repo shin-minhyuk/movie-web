@@ -15,7 +15,7 @@ export default function SwiperSection({ movies, title }) {
     <>
       <div className="card_container">
         <div>
-          <div className="titme_box">
+          <div className="title_box">
             <h1 className="text-[24px] ">{title}</h1>
             <div className="bg-[red] w-[100px] h-[5px]"></div>
           </div>

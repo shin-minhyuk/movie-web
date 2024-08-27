@@ -46,10 +46,8 @@
 .search_movie_container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  margin: 5rem auto 0;
-  max-width: 1366px;
+  margin: 0 auto;
   gap: 10px;
-  padding: 0 64px;
 }
 
 .btn_color {

@@ -30,8 +30,13 @@
   max-width: 1366px;
 }
 
+.title_box {
+  margin-bottom: 24px;
+}
+
 .card {
   position: relative;
+  cursor: pointer;
 
   &:hover {
     .card_backdrop {
