@@ -8,6 +8,8 @@ import Card from "../components/Card";
 import { client } from "../client/client";
 import { useSelector } from "react-redux";
 import Toast, { notify } from "../components/Toast";
+import userBasic from "../assets/user-basic.jpeg";
+import send from "../assets/send.svg";
 
 function Detail() {
   const { id } = useParams();
@@ -192,20 +194,60 @@ function Detail() {
               <div className="comments">
                 {commentDatas?.map((el) => (
                   <div key={el.id} className="comment">
-                    <p>닉네임: {el.nickname}</p>
-                    <p>내용: {el.comment}</p>
-                    <p>작성시: {el.created_at}</p>
+                    <div className="comment_imgBox">
+                      <img
+                        src={
+                          Boolean(el.profile_image)
+                            ? el.profile_image
+                            : userBasic
+                        }
+                        alt={`${el.nickname}님의 사진`}
+                      />
+                    </div>
+                    <div className="comment_content">
+                      <p>{el.nickname}</p>
+                      <p>
+                        {new Date(el.created_at).toLocaleString("ko-KR", {
+                          timeZone: "Asia/Seoul",
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          second: "2-digit",
+                        })}
+                      </p>
+                      <p>{el.comment}</p>
+                    </div>
                   </div>
                 ))}
               </div>
-              <input
-                type="text"
-                name="text"
-                placeholder="영화 리뷰를 작성해주세요"
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              />
-              <button type="submit">추가</button>
+              <div className="comment_sendBox">
+                <div className="comment_imgBox">
+                  <img
+                    src={
+                      Boolean(userData.profile_image)
+                        ? userData.profile_image
+                        : userBasic
+                    }
+                    alt={`${userData.nickname}님의 사진`}
+                  />
+                </div>
+                <div className="comment_add">
+                  <p>{userData.nickname}</p>
+                  <input
+                    type="text"
+                    name="text"
+                    placeholder="영화 리뷰를 작성해주세요"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                  />
+                  <button type="submit">
+                    <img src={send} alt="보내기 아이콘" />
+                    <span>작성하기</span>
+                  </button>
+                </div>
+              </div>
             </form>
           </div>
         </div>
