@@ -4,14 +4,18 @@ import DetailInfo from "../components/DetailInfo";
 import { useEffect, useState } from "react";
 import { clientMovie } from "../client/clientMovie";
 import SwiperVideos from "../components/SwiperVideos";
+import Card from "../components/Card";
 
 function Detail() {
   const { id } = useParams();
   const { VITE_IMG_URL_ORIGINAL } = import.meta.env;
   const [filteredData, setFilteredData] = useState(null);
   const [videos, setVideos] = useState(null);
+  const [similar, setSimilar] = useState(null);
 
-  window.scrollTo(0, 0);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const fetchDetailById = async () => {
@@ -41,13 +45,23 @@ function Detail() {
     fetchVideosById();
   }, [id]);
 
+  useEffect(() => {
+    const fetchPostersById = async () => {
+      try {
+        const { data } = await clientMovie.get(`/movie/${id}/similar`);
+
+        console.log("similar : ", data.results);
+        setSimilar(data.results);
+      } catch (err) {
+        console.error("영화 데이터 패치 오류: ", err);
+      }
+    };
+    fetchPostersById();
+  }, [id]);
+
   if (!filteredData) {
     return <div>해당 영화 데이터를 찾을 수 없습니다.</div>;
   }
-
-  console.log(videos);
-  console.log(videos[1].key); // YouTube 비디오 key 값
-  console.log(videos[1].name); // 타이틀로 사용된 값
 
   return (
     <main>
@@ -74,15 +88,30 @@ function Detail() {
           </div>
           <DetailInfo filteredData={filteredData} />
         </div>
+        {/* 섹션 2 */}
         <div className="home_inner">
           <div className="card_container">
             <div className="title_box">
-              <h1 className="text-[24px] ">티저 영상</h1>
+              <h1 className="text-[24px] ">{filteredData.title} </h1>
               <div className="bg-[red] w-[100px] h-[5px]"></div>
             </div>
 
             <div>
               <SwiperVideos videos={videos} />
+            </div>
+          </div>
+        </div>
+        {/* 섹션 3 */}
+        <div className="home_inner">
+          <div className="card_container">
+            <div className="title_box">
+              <h1 className="text-[24px] ">추천 영화</h1>
+              <div className="bg-[red] w-[100px] h-[5px]"></div>
+            </div>
+            <div className="search_movie_container">
+              {similar.slice(0, 8).map((el) => (
+                <Card key={el.id} movie={el} />
+              ))}
             </div>
           </div>
         </div>
