@@ -1,7 +1,7 @@
 import heart_translate from "../assets/heart_translate.svg";
 import heart_red from "../assets/heart_red.svg";
 import { useState } from "react";
-import { client } from "../Client/client";
+import { client } from "../client/client";
 import { useDispatch, useSelector } from "react-redux";
 import { favoritesSlice } from "../RTK/uesrSlice";
 
@@ -28,7 +28,7 @@ export default function DetailInfo({ filteredData }) {
     if (isFavorite) {
       try {
         await client.delete("/favorites", {
-          // delete를 사용할 때, params로 데이터를 알려주거나
+          // delete를 사용할 때, url에 직접 파라미터를 작성하거나,
           // 데이터가 많다면 body에 data 객체로 전달
           params: {
             user_id: `eq.${userId}`,

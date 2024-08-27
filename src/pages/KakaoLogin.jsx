@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { userSlice } from "../RTK/uesrSlice";
-import { client } from "../Client/client";
+import { client } from "../client/client";
 
 function KakaoLogin() {
   const [searchParams] = useSearchParams();

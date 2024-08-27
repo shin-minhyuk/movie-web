@@ -3,7 +3,7 @@ import * as Styled from "./Login.styled.js";
 import { isModal } from "../../RTK/modalSlice";
 import kakao from "../../assets/ico_kakao_logo.png";
 import { useState } from "react";
-import { client } from "../../Client/client.js";
+import { client } from "../../client/client.js";
 import { userSlice } from "../../RTK/uesrSlice.jsx";
 
 export default function Login() {
