@@ -4,12 +4,16 @@ import { useEffect, useState } from "react";
 import { client, clientProxy } from "../client/client";
 import { useDispatch, useSelector } from "react-redux";
 import { favoritesSlice } from "../RTK/uesrSlice";
+import Toast, { notify } from "./toast";
 
 export default function DetailInfo({ filteredData }) {
   const [isFavorite, setIsFavorite] = useState(false);
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.user);
   const { favorites } = useSelector((state) => state.favorites);
+
+  const token = localStorage.getItem("ACCESS_TOKEN");
+  const kakaoToken = localStorage.getItem("KAKAO_ACCESS_TOKEN");
 
   // id 값 정의
   const userId = userData.id;
@@ -24,7 +28,8 @@ export default function DetailInfo({ filteredData }) {
   const handleToggleFavorite = async (movie) => {
     // 토글 조건, 얘가 favorite 상태인지 아닌지 확인해야함
     const isTrue = favorites.some((el) => el === movie.id.toString());
-    console.log(isTrue, movie.id.toString());
+
+    if (!token && !kakaoToken) return console.log("로그인 하셨나요?");
 
     if (isTrue) {
       // 서버에서 제거
@@ -67,6 +72,18 @@ export default function DetailInfo({ filteredData }) {
     console.log(isFavorite);
   };
 
+  const onClick = () => {
+    handleToggleFavorite(filteredData);
+
+    if (!token && !kakaoToken) {
+      return notify({ type: "default", text: "혹시 로그인 하셨나요?" });
+    } else {
+      isFavorite
+        ? notify({ type: "error", text: "관심목록에서 삭제되었습니다" })
+        : notify({ type: "success", text: "관심목록에 추가되었습니다" });
+    }
+  };
+
   return (
     <div className="detail_main_info">
       <h1 className="detail_sec_title">
@@ -83,9 +100,10 @@ export default function DetailInfo({ filteredData }) {
         ))}
       </div>
       <div className="detail_sec_des">{filteredData.overview}</div>
-      <button onClick={() => handleToggleFavorite(filteredData)}>
+      <button onClick={onClick}>
         <img src={isFavorite ? heart_red : heart_translate} alt="찜하기" />
       </button>
+      <Toast />
     </div>
   );
 }
