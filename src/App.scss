@@ -168,3 +168,28 @@ body {
     }
   }
 }
+
+.mySwiper {
+  width: 100%;
+  height: auto;
+}
+
+.swiper-slide {
+  width: 80%;
+  height: auto;
+  padding: 10px;
+}
+
+/* 기본 Swiper 스타일을 덮어쓰기 */
+.swiper-pagination-bullet {
+  background-color: #ffffff;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #bbbbbb;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #b1b1b1 !important;
+}

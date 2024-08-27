@@ -1,7 +1,7 @@
 function MyPage() {
   return (
     <>
-      <div style={{ height: 800 }}></div>
+      <div className="search_container"></div>
     </>
   );
 }

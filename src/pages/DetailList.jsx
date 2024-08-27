@@ -80,24 +80,30 @@ function DetailList() {
   }, [isLoading, hasMore]);
 
   return (
-    <main className="home_container">
+    <>
       <div>
         <SwiperMainSection filteredData={now_playing} />
       </div>
-      <div className="search_movie_container">
-        {movies?.map((el, index) => (
-          <div
-            key={el.id}
-            // ref를 사용해서 div 돔 노드에 접근
-            // 현재 항목의 인덱스가 항목 배열의 마지막 인덱스와 같은지를 확인합니다.
-            // 이는 index가 배열의 마지막 항목일 때 true가 됩니다.
-            ref={index === movies.length - 1 ? lastItemRef : null}
-          >
-            <Card movie={el} />
+      <div className="search_container">
+        <div className="home_inner">
+          <div className="card_container">
+            <div className="search_movie_container">
+              {movies?.map((el, index) => (
+                <div
+                  key={el.id}
+                  // ref를 사용해서 div 돔 노드에 접근
+                  // 현재 항목의 인덱스가 항목 배열의 마지막 인덱스와 같은지를 확인합니다.
+                  // 이는 index가 배열의 마지막 항목일 때 true가 됩니다.
+                  ref={index === movies.length - 1 ? lastItemRef : null}
+                >
+                  <Card movie={el} />
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
+        </div>
       </div>
-    </main>
+    </>
   );
 }
 

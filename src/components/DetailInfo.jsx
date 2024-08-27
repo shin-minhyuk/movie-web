@@ -14,23 +14,6 @@ export default function DetailInfo({ filteredData }) {
   // id 값 정의
   const userId = userData.id;
 
-  // // 서버에서 즐겨찾기 목록을 가져오는 함수
-  // useEffect(() => {
-  //   const fetchAPI = async () => {
-  //     const { data } = await client.get("/rest/v1/favorites", {
-  //       params: {
-  //         user_id: `eq.${userId}`,
-  //       },
-  //     });
-
-  //     if (data)
-  //       dispatch(
-  //         favoritesSlice.actions.setFavorites(data.map((el) => el.item_id))
-  //       );
-  //   };
-  //   fetchAPI();
-  // }, []);
-
   useEffect(() => {
     const isTrue = favorites.some((el) => el === filteredData.id.toString());
 

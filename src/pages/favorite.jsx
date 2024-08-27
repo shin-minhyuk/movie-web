@@ -34,20 +34,18 @@ function Favorite() {
 
   return (
     <div className="search_container">
-      <div className="home_container">
-        <div className="home_inner ">
-          <div className="card_container">
-            <div className="title_box">
-              <h1 className="text-[24px] ">
-                내가 관심있는 영화 ({`${favorites.length}`})
-              </h1>
-              <div className="bg-[red] w-[100px] h-[5px]"></div>
-            </div>
-            <div className="search_movie_container">
-              {filteredData?.map((el) => (
-                <Card key={el.id} movie={el} />
-              ))}
-            </div>
+      <div className="home_inner ">
+        <div className="card_container">
+          <div className="title_box">
+            <h1 className="text-[24px] ">
+              내가 관심있는 영화 ({`${favorites.length}`})
+            </h1>
+            <div className="bg-[red] w-[100px] h-[5px]"></div>
+          </div>
+          <div className="search_movie_container">
+            {filteredData?.map((el) => (
+              <Card key={el.id} movie={el} />
+            ))}
           </div>
         </div>
       </div>
