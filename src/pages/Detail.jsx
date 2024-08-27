@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import "../styles/detail.scss";
-import DetailInfo from "../components/detailInfo";
+import DetailInfo from "../components/DetailInfo";
 import { useEffect, useState } from "react";
 import { clientMovie } from "../client/clientMovie";
 
