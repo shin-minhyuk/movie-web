@@ -24,20 +24,21 @@ function Detail() {
   // 특정 영화에 대한 리뷰 데이터가 필요함, 영화 데이터를 가져와서
   // 화면에 뿌릴 때, 데이터의 테이블 내용을 참조해서 ui를 구성
   // 그럼 사용자의 닉네임도 받아와야함 === 테이블 추가
+  const fetchCommentDatas = async () => {
+    try {
+      const { data } = await client.get("/rest/v1/comments", {
+        params: {
+          movie_id: `eq.${id}`,
+        },
+      });
+      console.log("댓글 데이터 응답: ", data);
+      setCommentDatas(data);
+    } catch (err) {
+      console.error("댓글 패치 에러: ", err);
+    }
+  };
+
   useEffect(() => {
-    const fetchCommentDatas = async () => {
-      try {
-        const { data } = await client.get("/rest/v1/comments", {
-          params: {
-            movie_id: `eq.${id}`,
-          },
-        });
-        console.log("댓글 데이터 응답: ", data);
-        setCommentDatas(data);
-      } catch (err) {
-        console.error("댓글 패치 에러: ", err);
-      }
-    };
     fetchCommentDatas();
   }, []);
 
@@ -107,8 +108,9 @@ function Detail() {
       return notify({ type: "error", text: "로그인이 필요한 서비스입니다" });
     }
 
+    // 댓글 추가
     addComment();
-    // 값 초기화
+    // 인풋값 초기화
     setComment("");
   };
   console.log(comment);
@@ -128,6 +130,8 @@ function Detail() {
 
       console.log("코멘트 응답: ", response);
       notify({ type: "success", text: "리뷰가 작성되었습니다" });
+
+      fetchCommentDatas();
     } catch (err) {
       console.error("코멘트 패치 에러: ", err);
     }
