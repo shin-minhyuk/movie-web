@@ -187,10 +187,10 @@ function Detail() {
               <Toast />
               <div className="comments">
                 {commentDatas?.map((el) => (
-                  <div className="comment">
-                    <p>{el.nickname}</p>
-                    <p>{el.content}</p>
-                    <p>{el.created_at}</p>
+                  <div key={el.id} className="comment">
+                    <p>닉네임: {el.nickname}</p>
+                    <p>내용: {el.comment}</p>
+                    <p>작성시: {el.created_at}</p>
                   </div>
                 ))}
               </div>
