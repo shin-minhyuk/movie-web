@@ -126,6 +126,14 @@ export default function Login() {
     }
   };
 
+  // KAKAO OAUTH URL
+  const { VITE_KAKAO_REDIRECT_URI, VITE_KAKAO_REST_API_KEY } = import.meta.env;
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${VITE_KAKAO_REST_API_KEY}&redirect_uri=${VITE_KAKAO_REDIRECT_URI}&prompt=select_account`;
+
+  const handleKakaoLogin = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  };
+
   return (
     <>
       {/* isModal이 true이면 isLogin이 true인지 false인지 비교를 시작 */}
@@ -177,7 +185,7 @@ export default function Login() {
               >
                 로그인
               </button>
-              <Styled.Kakao>
+              <Styled.Kakao onClick={() => handleKakaoLogin()}>
                 <img src={kakao} />
                 카카오로 3초 만에 시작하기
               </Styled.Kakao>
@@ -367,10 +375,6 @@ function SignUp({ setIsLogin }) {
     // basic isLogin value 초기화
     setIsLogin(true);
   };
-
-  const { VITE_KAKAO_REDIRECT_URI, VITE_KAKAO_REST_API_KEY } = import.meta.env;
-
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${VITE_KAKAO_REST_API_KEY}&redirect_uri=${VITE_KAKAO_REDIRECT_URI}&prompt=select_account`;
 
   const handleKakaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL;

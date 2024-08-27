@@ -30,6 +30,7 @@ function KakaoLogin() {
             },
           }
         );
+        console.log(response);
 
         const { access_token, refresh_token } = response.data;
         localStorage.setItem("KAKAO_ACCESS_TOKEN", access_token);

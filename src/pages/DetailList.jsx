@@ -19,13 +19,18 @@ function DetailList() {
   const lastItemRef = useRef();
   const observer = useRef();
 
+  // 첫페이지 로딩
   useEffect(() => {
     const fetchFirstPage = async () => {
       setIsLoading(true);
       try {
+        // 1페이지 데이터 패치
         const response = await clientMovie.get(`/movie/now_playing?page=1`);
+        // response 저장
         setMovies(response.data.results);
-        setPage(2); // 초기 데이터 패칭 이후 다음 페이지 설정
+        // 초기 데이터 패칭 이후 다음 페이지 설정
+        setPage(2);
+        // 데이터가 전달되었는지 확인 (추가 데이터 확인)
         setHasMore(response.data.results.length > 0);
       } catch (err) {
         console.error("초기 데이터 패칭 에러: ", err);
@@ -81,10 +86,11 @@ function DetailList() {
       </div>
       <div className="search_movie_container">
         {movies?.map((el, index) => (
-          // 현재 항목의 인덱스가 항목 배열의 마지막 인덱스와 같은지를 확인합니다.
-          // 이는 index가 배열의 마지막 항목일 때 true가 됩니다.
           <div
-            key={`${el.id}-${index}`}
+            key={el.id}
+            // ref를 사용해서 div 돔 노드에 접근
+            // 현재 항목의 인덱스가 항목 배열의 마지막 인덱스와 같은지를 확인합니다.
+            // 이는 index가 배열의 마지막 항목일 때 true가 됩니다.
             ref={index === movies.length - 1 ? lastItemRef : null}
           >
             <Card movie={el} />

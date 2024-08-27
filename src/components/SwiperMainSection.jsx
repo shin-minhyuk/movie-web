@@ -5,11 +5,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
 import { useSelector } from "react-redux";
-
 import "../styles/detail.scss";
 
 const { VITE_IMG_URL_ORIGINAL } = import.meta.env;
-console.log(VITE_IMG_URL_ORIGINAL);
 
 export default function SwiperMainSection() {
   const { now_playing } = useSelector((state) => state.movieMain);

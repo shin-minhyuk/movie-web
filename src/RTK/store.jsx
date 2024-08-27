@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { movieMainSlice } from "./movieSlice";
 import modalReducer from "./modalSlice";
 import { globalLoadingSlice } from "./globalLoadingSlice";
-import { userSlice } from "./uesrSlice";
+import { favoritesSlice, userSlice } from "./uesrSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +10,6 @@ export const store = configureStore({
     modal: modalReducer,
     globalLoading: globalLoadingSlice.reducer,
     user: userSlice.reducer,
+    favorites: favoritesSlice.reducer,
   },
 });

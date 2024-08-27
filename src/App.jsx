@@ -16,7 +16,9 @@ import KakaoLogin from "./pages/KakaoLogin";
 import "./App.scss";
 import { userSlice } from "./RTK/uesrSlice";
 import axios from "axios";
-import { client } from "./Client/client";
+import { client } from "./client/client";
+import Favorite from "./pages/favorite";
+import MyPage from "./pages/mypage";
 
 function App() {
   const dispatch = useDispatch();
@@ -50,50 +52,42 @@ function App() {
     const kakaoToken = localStorage.getItem("KAKAO_ACCESS_TOKEN");
     const token = localStorage.getItem("ACCESS_TOKEN");
 
-    // switch (true)라고 하면, switch 문은 true 값을 기반으로 각 case의 조건을 평가
-    switch (true) {
-      // kakao oauth 사용자의 경우
-      case !!kakaoToken:
-        const fetchKakaoData = async () => {
-          const response = await axios.get(
-            "https://kapi.kakao.com/v2/user/me",
-            {
-              headers: {
-                Authorization: `Bearer ${access_token}`,
-              },
-            }
-          );
-          const userInfo = response.data;
-          dispatch(userSlice.actions.setKakaoLogin(userInfo));
-          dispatch(userSlice.actions.setIsUser(true));
-        };
-        fetchKakaoData();
-        break;
-      // email login 사용자의 경우
-      case !!token:
-        const fetchData = async () => {
-          const { data } = await client.get("/auth/v1/user", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          const { id } = data;
+    if (!!kakaoToken) {
+      const fetchKakaoData = async () => {
+        const response = await axios.get("https://kapi.kakao.com/v2/user/me", {
+          headers: {
+            Authorization: `Bearer ${kakaoToken}`,
+          },
+        });
+        const userInfo = response.data;
+        dispatch(userSlice.actions.setKakaoLogin(userInfo));
+        dispatch(userSlice.actions.setIsUser(true));
 
-          const filteredData = await client.get(
-            `/rest/v1/profiles?id=eq.${id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          dispatch(userSlice.actions.setLogin(filteredData.data[0]));
-          dispatch(userSlice.actions.setIsUser(true));
-        };
-        fetchData();
-        break;
-      default:
-        break;
+        // // 카카오 토큰이 있으면, 이메일 토큰들은 무조건 삭제
+        localStorage.removeItem("ACCESS_TOKEN");
+        localStorage.removeItem("REFRESH_TOKEN");
+      };
+      fetchKakaoData();
+    } else if (!!token) {
+      const fetchData = async () => {
+        const { data } = await client.get("/auth/v1/user", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const { id } = data;
+
+        const filteredData = await client.get(`/rest/v1/profiles?id=eq.${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        dispatch(userSlice.actions.setLogin(filteredData.data[0]));
+        dispatch(userSlice.actions.setIsUser(true));
+      };
+      fetchData();
+    } else {
+      console.log("액세스 토큰을 찾을 수 없습니다");
     }
   };
 
@@ -117,6 +111,8 @@ function App() {
             <Route path="/detail" element={<DetailList />}></Route>
             <Route path="/detail/:id" element={<Detail />}></Route>
             <Route path="/auth/kakao/callback" element={<KakaoLogin />}></Route>
+            <Route path="/favorite" element={<Favorite />}></Route>
+            <Route path="/mypage" element={<MyPage />}></Route>
           </Routes>
           <Login />
         </>

@@ -7,14 +7,15 @@ import Navigation from "./navigation";
 import dark from "../assets/dark-mode.svg";
 import white from "../assets/white-mode.svg";
 import userBasic from "../assets/user-basic.jpeg";
+import { Link } from "react-router-dom";
 
 export default function Header() {
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState("white");
   const { isUser, userData } = useSelector((state) => state.user);
-  console.log("로그인: ", isUser);
-  console.log("사용자 정보: ", userData);
   const dispatch = useDispatch();
   const [isUserModal, setIsUserModal] = useState(false);
+  // console.log("로그인: ", isUser);
+  console.log("사용자 정보: ", userData);
 
   const themeToggle = () => {
     const html = document.documentElement;
@@ -106,8 +107,12 @@ export default function Header() {
                       onClick={(e) => e.stopPropagation()}
                       className={`header_toggle ${isUserModal ? "show" : ""}`}
                     >
-                      <div>관심목록</div>
-                      <div>계정관리</div>
+                      <div>
+                        <Link to="/favorite">관심목록</Link>
+                      </div>
+                      <div>
+                        <Link to="/mypage">계정관리</Link>
+                      </div>
                       <div onClick={() => handleSignOut()}>로그아웃</div>
                     </div>
                   </div>
