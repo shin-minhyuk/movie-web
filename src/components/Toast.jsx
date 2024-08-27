@@ -23,7 +23,7 @@ export const notify = ({ type, text }) => {
 const Toast = () => {
   return (
     <ToastContainer
-      position="bottom-left"
+      position="top-right"
       autoClose={autoClose}
       hideProgressBar={false}
       newestOnTop={false}

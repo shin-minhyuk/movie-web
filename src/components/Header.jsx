@@ -10,22 +10,36 @@ import userBasic from "../assets/user-basic.jpeg";
 import { Link } from "react-router-dom";
 
 export default function Header() {
-  const [theme, setTheme] = useState("white");
+  const [theme, setTheme] = useState("dark");
   const { isUser, userData } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [isUserModal, setIsUserModal] = useState(false);
+  const html = document.documentElement;
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme) {
+      setTheme(storedTheme);
+      if (storedTheme === "white") {
+        html.classList.add("ui-white");
+      } else {
+        html.classList.remove("ui-white");
+      }
+    } else {
+      setTheme("dark");
+      html.classList.remove("ui-white");
+    }
+  }, []);
 
   const themeToggle = () => {
-    const html = document.documentElement;
-
     if (html.classList.contains("ui-white")) {
       html.classList.remove("ui-white");
-      setTheme("white");
-      console.log("테마: ", theme);
+      setTheme("dark");
+      localStorage.setItem("theme", "dark");
     } else {
       html.classList.add("ui-white");
-      setTheme("dark");
-      console.log("테마: ", theme);
+      setTheme("white");
+      localStorage.setItem("theme", "white");
     }
   };
 
@@ -76,7 +90,7 @@ export default function Header() {
             <Logo />
             <Navigation />
             <button onClick={themeToggle} className="header_theme_color">
-              <img src={theme === "dark" ? white : dark} alt="" />
+              <img src={theme === "dark" ? dark : white} alt="theme icon" />
             </button>
           </nav>
           <div className="header_auth">
