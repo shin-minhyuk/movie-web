@@ -25,17 +25,18 @@ export default function SwiperVideos({ videos }) {
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        {videos.slice(0, 5).map((el) => (
-          <SwiperSlide key={el.key}>
-            <iframe
-              src={`https://www.youtube.com/embed/${el.key}?controls=0`}
-              width="100%"
-              title={el.name}
-              style={{ border: 0 }}
-              height="678.375px"
-            ></iframe>
-          </SwiperSlide>
-        ))}
+        {videos &&
+          videos.slice(0, 5).map((el) => (
+            <SwiperSlide key={el.key}>
+              <iframe
+                src={`https://www.youtube.com/embed/${el.key}?controls=0`}
+                width="100%"
+                title={el.name}
+                style={{ border: 0 }}
+                height="678.375px"
+              ></iframe>
+            </SwiperSlide>
+          ))}
       </Swiper>
     </>
   );

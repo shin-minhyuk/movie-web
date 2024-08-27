@@ -1,9 +1,5 @@
 function MyPage() {
-  return (
-    <>
-      <div className="search_container"></div>
-    </>
-  );
+  return <></>;
 }
 
 export default MyPage;

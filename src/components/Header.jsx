@@ -8,6 +8,7 @@ import dark from "../assets/dark-mode.svg";
 import white from "../assets/white-mode.svg";
 import userBasic from "../assets/user-basic.jpeg";
 import { Link } from "react-router-dom";
+import Toast, { notify } from "./toast";
 
 export default function Header() {
   const [theme, setTheme] = useState("dark");
@@ -35,10 +36,12 @@ export default function Header() {
     if (html.classList.contains("ui-white")) {
       html.classList.remove("ui-white");
       setTheme("dark");
+      notify({ type: "success", text: "다크모드가 저장되었습니다" });
       localStorage.setItem("theme", "dark");
     } else {
       html.classList.add("ui-white");
       setTheme("white");
+      notify({ type: "success", text: "화이트모드가 저장되었습니다" });
       localStorage.setItem("theme", "white");
     }
   };
@@ -92,6 +95,7 @@ export default function Header() {
             <button onClick={themeToggle} className="header_theme_color">
               <img src={theme === "dark" ? dark : white} alt="theme icon" />
             </button>
+            <Toast />
           </nav>
           <div className="header_auth">
             {isUser ? (
