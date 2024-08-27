@@ -9,3 +9,10 @@ export const client = axios.create({
     apikey: VITE_SUPABASE_APIKEY,
   },
 });
+
+export const clientProxy = axios.create({
+  baseURL: "http://localhost:5173",
+  headers: {
+    apikey: VITE_SUPABASE_APIKEY,
+  },
+});

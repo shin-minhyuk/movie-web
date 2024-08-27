@@ -14,8 +14,6 @@ export default function Header() {
   const { isUser, userData } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [isUserModal, setIsUserModal] = useState(false);
-  // console.log("로그인: ", isUser);
-  console.log("사용자 정보: ", userData);
 
   const themeToggle = () => {
     const html = document.documentElement;

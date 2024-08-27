@@ -40,8 +40,11 @@ export const favoritesSlice = createSlice({
   },
   reducers: {
     addFavorite: (state, action) => {
-      // const isFavorites
-      state.favorites.push(action.payload);
+      const isFavorites = state.favorites.some((el) => el === action.payload);
+
+      // 서버에서도 테이블에 같은 내용이 들어오지 않도록 방어처리를 했지만
+      // 클라이언트에서도 조건을 걸어서 favorite 상태라면 push가 되지 않도록 설계
+      if (!isFavorites) state.favorites.push(action.payload);
     },
     removeFavorite: (state, action) => {
       state.favorites = state.favorites.filter(

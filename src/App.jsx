@@ -14,7 +14,7 @@ import DetailList from "./pages/DetailList";
 import KakaoLogin from "./pages/KakaoLogin";
 
 import "./App.scss";
-import { userSlice } from "./RTK/uesrSlice";
+import { favoritesSlice, userSlice } from "./RTK/uesrSlice";
 import axios from "axios";
 import { client } from "./client/client";
 import Favorite from "./pages/favorite";
@@ -24,14 +24,14 @@ function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const { globalLoading } = useSelector((state) => state.globalLoading);
-  const { isUser, userData } = useSelector((state) => state.user);
+  const { userData } = useSelector((state) => state.user);
+  const userId = userData.id;
 
   // 메인페이지 데이터 패치
   useEffect(() => {
     dispatch(fetchMovieMain());
   }, []);
 
-  // global loading 수정해야함
   useEffect(() => {
     if (
       location.pathname.startsWith("/search") ||
@@ -48,52 +48,81 @@ function App() {
     }, 1000);
   }, [location.pathname]);
 
-  const checkLocalStorageToken = () => {
+  // 로컬스토리지 토큰 확인 및 사용자 정보 업데이트
+  const checkLocalStorageToken = async () => {
     const kakaoToken = localStorage.getItem("KAKAO_ACCESS_TOKEN");
     const token = localStorage.getItem("ACCESS_TOKEN");
 
+    // 카카오 토큰이 있는 경우
     if (!!kakaoToken) {
-      const fetchKakaoData = async () => {
-        const response = await axios.get("https://kapi.kakao.com/v2/user/me", {
-          headers: {
-            Authorization: `Bearer ${kakaoToken}`,
-          },
-        });
-        const userInfo = response.data;
-        dispatch(userSlice.actions.setKakaoLogin(userInfo));
-        dispatch(userSlice.actions.setIsUser(true));
+      const response = await axios.get("https://kapi.kakao.com/v2/user/me", {
+        headers: {
+          Authorization: `Bearer ${kakaoToken}`,
+        },
+      });
+      const userInfo = response.data;
+      dispatch(userSlice.actions.setKakaoLogin(userInfo));
+      dispatch(userSlice.actions.setIsUser(true));
 
-        // // 카카오 토큰이 있으면, 이메일 토큰들은 무조건 삭제
-        localStorage.removeItem("ACCESS_TOKEN");
-        localStorage.removeItem("REFRESH_TOKEN");
-      };
-      fetchKakaoData();
+      // 카카오 토큰이 있으면, 이메일 토큰들은 무조건 삭제
+      localStorage.removeItem("ACCESS_TOKEN");
+      localStorage.removeItem("REFRESH_TOKEN");
+
+      // 이메일 로그인인 경우
     } else if (!!token) {
-      const fetchData = async () => {
-        const { data } = await client.get("/auth/v1/user", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const { id } = data;
+      const { data } = await client.get("/auth/v1/user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const { id } = data;
 
-        const filteredData = await client.get(`/rest/v1/profiles?id=eq.${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        dispatch(userSlice.actions.setLogin(filteredData.data[0]));
-        dispatch(userSlice.actions.setIsUser(true));
-      };
-      fetchData();
+      const filteredData = await client.get(`/rest/v1/profiles?id=eq.${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(userSlice.actions.setLogin(filteredData.data[0]));
+      dispatch(userSlice.actions.setIsUser(true));
     } else {
       console.log("액세스 토큰을 찾을 수 없습니다");
     }
   };
 
+  // 서버에서 즐겨찾기 목록을 가져오는 함수
+  const fetchFavorites = async () => {
+    if (userId === "") return console.log("아이디를 찾을 수 없습니다");
+
+    try {
+      const { data } = await client.get("/rest/v1/favorites", {
+        params: {
+          user_id: `eq.${userId}`,
+        },
+      });
+
+      if (data)
+        dispatch(
+          favoritesSlice.actions.setFavorites(data.map((el) => el.item_id))
+        );
+      console.log(
+        "즐겨찾기 함수 실행됨 ",
+        data.map((el) => el.item_id)
+      );
+    } catch (err) {
+      console.error("즐겨찾기 목록 에러: ", err);
+    }
+  };
+
   useEffect(() => {
-    checkLocalStorageToken();
+    const initialize = async () => {
+      await checkLocalStorageToken();
+    };
+    initialize();
   }, []);
+
+  useEffect(() => {
+    fetchFavorites();
+  }, [userId]);
 
   return (
     <div className="App">
