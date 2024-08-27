@@ -7,7 +7,7 @@ import SwiperVideos from "../components/SwiperVideos";
 import Card from "../components/Card";
 import { client } from "../client/client";
 import { useSelector } from "react-redux";
-import Toast, { notify } from "../components/toast";
+import Toast, { notify } from "../components/Toast";
 
 function Detail() {
   const { id } = useParams();
@@ -190,7 +190,7 @@ function Detail() {
                   <div className="comment">
                     <p>{el.nickname}</p>
                     <p>{el.content}</p>
-                    <p>{el.created_at.slice(0, 9)}</p>
+                    <p>{el.created_at}</p>
                   </div>
                 ))}
               </div>
