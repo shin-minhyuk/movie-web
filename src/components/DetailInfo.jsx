@@ -103,7 +103,6 @@ export default function DetailInfo({ filteredData }) {
       <button onClick={onClick}>
         <img src={isFavorite ? heart_red : heart_translate} alt="찜하기" />
       </button>
-      <Toast />
     </div>
   );
 }
