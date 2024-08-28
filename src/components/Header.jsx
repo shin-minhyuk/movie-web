@@ -95,7 +95,6 @@ export default function Header() {
             <button onClick={themeToggle} className="header_theme_color">
               <img src={theme === "dark" ? dark : white} alt="theme icon" />
             </button>
-            <Toast />
           </nav>
           <div className="header_auth">
             {isUser ? (
