@@ -1,19 +1,20 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState } from 'react'
 // Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 // Import Swiper styles
-import "swiper/css";
-import "swiper/css/pagination";
+import 'swiper/css'
+import 'swiper/css/pagination'
 
 // import required modules
-import { Pagination } from "swiper/modules";
-import Card from "./Card";
+import { Pagination } from 'swiper/modules'
+import Card from '../../Card/Card'
+import { SectionWrapper } from './style'
 
 export default function SwiperSection({ movies, title }) {
   return (
     <>
-      <div className="card_container">
+      <SectionWrapper>
         <div>
           <div className="title_box">
             <h1 className="text-[24px] ">{title}</h1>
@@ -46,7 +47,7 @@ export default function SwiperSection({ movies, title }) {
             ))}
           </Swiper>
         </div>
-      </div>
+      </SectionWrapper>
     </>
-  );
+  )
 }

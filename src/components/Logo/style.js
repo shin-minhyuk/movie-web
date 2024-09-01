@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
-export const Logo = styled.p`
+export const LogoWrapper = styled.p`
   font-size: 36px;
   font-weight: 900;
 
@@ -9,4 +9,4 @@ export const Logo = styled.p`
     font-size: 36px;
     font-weight: 900;
   }
-`;
+`

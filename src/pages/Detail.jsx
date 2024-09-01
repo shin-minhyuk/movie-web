@@ -3,13 +3,14 @@ import '../styles/detail.scss'
 import DetailInfo from '../components/DetailInfo'
 import { useEffect, useState } from 'react'
 import { clientMovie } from '../client/clientMovie'
-import SwiperVideos from '../components/SwiperVideos'
-import Card from '../components/Card'
+
+import Card from '../components/Card/Card'
 import { client } from '../client/client'
 import { useSelector } from 'react-redux'
 import Toast, { notify } from '../components/Toast'
 import userBasic from '../assets/user-basic.jpeg'
 import send from '../assets/send.svg'
+import SwiperVideos from '../components/Swiper/SwiperVideos'
 
 function Detail() {
   const { id } = useParams()

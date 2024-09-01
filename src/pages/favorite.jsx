@@ -1,36 +1,36 @@
-import { useSelector } from "react-redux";
-import { clientMovie } from "../client/clientMovie";
-import { useEffect, useState } from "react";
-import Card from "../components/Card";
+import { useSelector } from 'react-redux'
+import { clientMovie } from '../client/clientMovie'
+import { useEffect, useState } from 'react'
+import Card from '../components/Card/Card'
 
 function Favorite() {
-  const { favorites } = useSelector((state) => state.favorites);
-  const [filteredData, setFilteredData] = useState([]);
-  console.log(favorites.length);
+  const { favorites } = useSelector((state) => state.favorites)
+  const [filteredData, setFilteredData] = useState([])
+  console.log(favorites.length)
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    window.scrollTo(0, 0)
+  }, [])
 
   const fetchDetailById = async (id) => {
     try {
-      const { data } = await clientMovie.get(`/movie/${id}`);
-      return data;
+      const { data } = await clientMovie.get(`/movie/${id}`)
+      return data
     } catch (err) {
-      console.error("즐겨찾기 패치에러: ", err);
+      console.error('즐겨찾기 패치에러: ', err)
     }
-  };
+  }
 
   const fetchAll = async () => {
     const response = await Promise.all(
       favorites.map((el) => fetchDetailById(el))
-    );
-    setFilteredData(response);
-  };
+    )
+    setFilteredData(response)
+  }
 
   useEffect(() => {
-    fetchAll();
-  }, [favorites]);
+    fetchAll()
+  }, [favorites])
 
   return (
     <div className="search_container">
@@ -50,7 +50,7 @@ function Favorite() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Favorite;
+export default Favorite

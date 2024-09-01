@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Wrapper = styled.div`
   position: fixed;
@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   display: grid;
   place-items: center;
   z-index: 1000;
-`;
+`
 
 export const Inner = styled.div`
   display: flex;
@@ -34,7 +34,7 @@ export const Inner = styled.div`
       font-weight: 600;
     }
   }
-`;
+`
 
 export const LoginFrom = styled.form`
   display: flex;
@@ -43,35 +43,7 @@ export const LoginFrom = styled.form`
   width: 100%;
   gap: 24px;
 
-  div {
-    width: 100%;
-
-    input {
-      width: 100%;
-      padding: 16px 20px;
-      border-radius: 6px;
-      background-color: transparent;
-      border: 1px solid #444;
-
-      &:hover {
-        outline: 1.5px solid #fff;
-      }
-
-      &:focus {
-        outline: 1.5px solid #5fbb73;
-      }
-    }
-
-    input.error {
-      border: 1px solid #f44336;
-
-      &:focus {
-        outline: 1.5px solid #f44336;
-      }
-    }
-  }
-
-  button[type="submit"] {
+  button[type='submit'] {
     width: 100%;
     border-radius: 6px;
     background-color: red;
@@ -97,7 +69,7 @@ export const LoginFrom = styled.form`
     margin: 3px 20px 0;
     color: #f44336;
   }
-`;
+`
 
 export const Kakao = styled.button`
   display: flex;
@@ -110,4 +82,4 @@ export const Kakao = styled.button`
   border-radius: 6px;
   padding: 16px 0;
   font-weight: 600;
-`;
+`

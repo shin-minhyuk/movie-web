@@ -35,7 +35,7 @@ export default function Header() {
   // 헤더 bg 옵저버 트리거
   useEffect(() => {
     const header_trigger = document.querySelector('.header_trigger')
-    const header = document.querySelector('.header_container')
+    const header = document.querySelector('header')
 
     if (!header_trigger) return console.log('헤더가 정의되지 않음')
 
@@ -48,9 +48,9 @@ export default function Header() {
     const callback = (entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          header.classList.remove('header_bg')
+          header?.classList.remove('header_bg')
         } else {
-          header.classList.add('header_bg')
+          header?.classList.add('header_bg')
         }
       })
     }
@@ -72,12 +72,13 @@ export default function Header() {
   }
 
   const handleLoginClick = () => {
-    dispatch(modalSlice.actions.isModal(true))
+    dispatch(modalSlice.actions.setIsVisible(true))
+    dispatch(modalSlice.actions.setModalType('Login'))
   }
 
   return (
     <>
-      <HeaderWrapper className="header_container">
+      <HeaderWrapper>
         <div className="header_inner">
           <Navigation theme={theme} setTheme={setTheme} html={html} />
           <div className="header_auth">

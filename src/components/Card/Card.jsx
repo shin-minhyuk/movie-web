@@ -1,14 +1,14 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
+import { CardWrapper } from './style'
 
 export default function Card({ movie }) {
-  const navigate = useNavigate();
-  const { VITE_IMG_URL } = import.meta.env;
+  const navigate = useNavigate()
+  const { VITE_IMG_URL } = import.meta.env
 
   return (
-    <div
+    <CardWrapper
       onClick={() => navigate(`/detail/${movie.id.toString()}`)}
       key={movie.id}
-      className="card"
     >
       <img src={VITE_IMG_URL + movie.poster_path} alt={movie.title} />
       <div className="card_backdrop "></div>
@@ -19,6 +19,6 @@ export default function Card({ movie }) {
         <div>{movie?.release_date?.slice(0, 4)}</div>
         <div>{movie.title}</div>
       </div>
-    </div>
-  );
+    </CardWrapper>
+  )
 }
