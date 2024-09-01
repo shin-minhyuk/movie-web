@@ -1,6 +1,6 @@
-import Logo from "../Logo";
-import Navigation from "../navigation";
-import * as Styled from "./footer.styled";
+import Logo from '../Logo'
+import Navigation from '../Navigation'
+import * as Styled from './footer.styled'
 
 function Footer() {
   return (
@@ -10,7 +10,7 @@ function Footer() {
         <Navigation />
       </nav>
     </Styled.Footer>
-  );
+  )
 }
 
-export default Footer;
+export default Footer
