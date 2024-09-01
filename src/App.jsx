@@ -19,7 +19,7 @@ import { client } from './client/client'
 import Favorite from './pages/favorite'
 import MyPage from './pages/mypage'
 import Header from './components/Header'
-import Login from './components/Login'
+import Login from './components/auth/Login'
 
 function App() {
   const dispatch = useDispatch()

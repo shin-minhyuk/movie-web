@@ -50,30 +50,6 @@
   }
 }
 
-.main_slide_backdrop {
-  padding-top: 50%;
-  background-position: center top;
-  background-size: cover;
-}
-
-.main_slide_backdrop_bg_left {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background-image: linear-gradient(90deg, var(--background-color), transparent);
-}
-
-.main_slide_backdrop_bg_bottom {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background-image: linear-gradient(to top, var(--background-color) 30%, transparent);
-}
-
 .comments_container {
   .comments {
     display: flex;

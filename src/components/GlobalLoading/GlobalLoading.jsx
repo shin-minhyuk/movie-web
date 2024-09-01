@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
-import Logo from "../Logo";
-import * as Styled from "./GlobalLoading.styled";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from 'react'
+import Logo from '../Logo'
+import * as Styled from './GlobalLoading.styled'
+import { useSelector } from 'react-redux'
 
 export default function GlobalLoading() {
-  const { globalLoading } = useSelector((state) => state.globalLoading);
-  const [isLoading, setIsloading] = useState(false);
+  const { globalLoading } = useSelector((state) => state.globalLoading)
+  const [isLoading, setIsloading] = useState(false)
 
   useEffect(() => {
     if (globalLoading) {
-      setIsloading(true);
+      setIsloading(true)
     } else {
-      setIsloading(false);
+      setIsloading(false)
     }
-  }, [globalLoading]);
+  }, [globalLoading])
 
   return (
     <Styled.Box $isLoading={isLoading}>
@@ -23,5 +23,5 @@ export default function GlobalLoading() {
       </Styled.Loading>
       <Logo />
     </Styled.Box>
-  );
+  )
 }
