@@ -1,90 +1,86 @@
-import { useParams } from "react-router-dom";
-import "../styles/detail.scss";
-import DetailInfo from "../components/DetailInfo";
-import { useEffect, useState } from "react";
-import { clientMovie } from "../client/clientMovie";
-import SwiperVideos from "../components/SwiperVideos";
-import Card from "../components/Card";
-import { client } from "../client/client";
-import { useSelector } from "react-redux";
-import Toast, { notify } from "../components/Toast";
-import userBasic from "../assets/user-basic.jpeg";
-import send from "../assets/send.svg";
+import { useParams } from 'react-router-dom'
+import '../styles/detail.scss'
+import DetailInfo from '../components/DetailInfo'
+import { useEffect, useState } from 'react'
+import { clientMovie } from '../client/clientMovie'
+import SwiperVideos from '../components/SwiperVideos'
+import Card from '../components/Card'
+import { client } from '../client/client'
+import { useSelector } from 'react-redux'
+import Toast, { notify } from '../components/Toast'
+import userBasic from '../assets/user-basic.jpeg'
+import send from '../assets/send.svg'
 
 function Detail() {
-  const { id } = useParams();
-  const { VITE_IMG_URL_ORIGINAL } = import.meta.env;
-  const [filteredData, setFilteredData] = useState(null);
-  const [videos, setVideos] = useState(null);
-  const [similar, setSimilar] = useState(null);
-  const [comment, setComment] = useState("");
-  const [commentDatas, setCommentDatas] = useState([]);
+  const { id } = useParams()
+  const { VITE_IMG_URL_ORIGINAL } = import.meta.env
+  const [filteredData, setFilteredData] = useState(null)
+  const [videos, setVideos] = useState(null)
+  const [similar, setSimilar] = useState(null)
+  const [comment, setComment] = useState('')
+  const [commentDatas, setCommentDatas] = useState([])
+  const { userData } = useSelector((state) => state.user)
 
-  const { userData } = useSelector((state) => state.user);
-
-  // 영화 id값과 사용자의 id값을 대조해서 데이터를 가져온다 X
-  // 특정 영화에 대한 리뷰 데이터가 필요함, 영화 데이터를 가져와서
-  // 화면에 뿌릴 때, 데이터의 테이블 내용을 참조해서 ui를 구성
-  // 그럼 사용자의 닉네임도 받아와야함 === 테이블 추가
   const fetchCommentDatas = async () => {
     try {
-      const { data } = await client.get("/rest/v1/comments", {
+      const { data } = await client.get('/rest/v1/comments', {
         params: {
           movie_id: `eq.${id}`,
         },
-      });
-      console.log("댓글 데이터 응답: ", data);
-      setCommentDatas(data);
+      })
+      console.log('댓글 데이터 응답: ', data)
+      setCommentDatas(data)
     } catch (err) {
-      console.error("댓글 패치 에러: ", err);
+      console.error('댓글 패치 에러: ', err)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchCommentDatas();
-  }, []);
+    window.scrollTo(0, 0)
+    fetchCommentDatas()
+  }, [])
 
   useEffect(() => {
     const fetchDetailById = async () => {
       try {
-        const { data } = await clientMovie.get(`/movie/${id}`);
+        const { data } = await clientMovie.get(`/movie/${id}`)
 
-        console.log(data);
-        setFilteredData(data);
+        console.log(data)
+        setFilteredData(data)
       } catch (err) {
-        console.error("영화 데이터 패치 오류: ", err);
+        console.error('영화 데이터 패치 오류: ', err)
       }
-    };
-    fetchDetailById();
-  }, [id]);
+    }
+    fetchDetailById()
+  }, [id])
 
   useEffect(() => {
     const fetchVideosById = async () => {
       try {
-        const { data } = await clientMovie.get(`/movie/${id}/videos`);
+        const { data } = await clientMovie.get(`/movie/${id}/videos`)
 
-        console.log("영화 비디오: ", data.results);
-        setVideos(data.results);
+        console.log('영화 비디오: ', data.results)
+        setVideos(data.results)
       } catch (err) {
-        console.error("영화 데이터 패치 오류: ", err);
+        console.error('영화 데이터 패치 오류: ', err)
       }
-    };
-    fetchVideosById();
-  }, [id]);
+    }
+    fetchVideosById()
+  }, [id])
 
   useEffect(() => {
     const fetchPostersById = async () => {
       try {
-        const { data } = await clientMovie.get(`/movie/${id}/similar`);
+        const { data } = await clientMovie.get(`/movie/${id}/similar`)
 
-        console.log("similar : ", data.results);
-        setSimilar(data.results);
+        console.log('similar : ', data.results)
+        setSimilar(data.results)
       } catch (err) {
-        console.error("영화 데이터 패치 오류: ", err);
+        console.error('영화 데이터 패치 오류: ', err)
       }
-    };
-    fetchPostersById();
-  }, [id]);
+    }
+    fetchPostersById()
+  }, [id])
 
   /**
    *  테이블 : id(댓글번호), movie_id(영화id), user_id(사용자id), comment(댓글내용), created_at(작성시간)
@@ -104,43 +100,43 @@ function Detail() {
    * 
    */
   const onSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    if (userData.id === "") {
-      return notify({ type: "error", text: "로그인이 필요한 서비스입니다" });
+    if (userData.id === '') {
+      return notify({ type: 'error', text: '로그인이 필요한 서비스입니다' })
     }
 
     // 댓글 추가
-    addComment();
+    addComment()
     // 인풋값 초기화
-    setComment("");
-  };
-  console.log(comment);
+    setComment('')
+  }
+  console.log(comment)
 
   // 댓글 추가 함수
   const addComment = async () => {
     // 예외처리 early return
-    if (comment === "") return console.log("값이 입력되지 않았습니다");
+    if (comment === '') return console.log('값이 입력되지 않았습니다')
 
     try {
-      const response = await client.post("/rest/v1/comments", {
+      const response = await client.post('/rest/v1/comments', {
         user_id: userData.id,
         movie_id: id,
         comment: comment,
         nickname: userData.nickname,
-      });
+      })
 
-      console.log("코멘트 응답: ", response);
-      notify({ type: "success", text: "리뷰가 작성되었습니다" });
+      console.log('코멘트 응답: ', response)
+      notify({ type: 'success', text: '리뷰가 작성되었습니다' })
 
-      fetchCommentDatas();
+      fetchCommentDatas()
     } catch (err) {
-      console.error("코멘트 패치 에러: ", err);
+      console.error('코멘트 패치 에러: ', err)
     }
-  };
+  }
 
   if (!filteredData) {
-    return <div>해당 영화 데이터를 찾을 수 없습니다.</div>;
+    return <div>해당 영화 데이터를 찾을 수 없습니다.</div>
   }
 
   return (
@@ -207,14 +203,14 @@ function Detail() {
                     <div className="comment_content">
                       <p>{el.nickname}</p>
                       <p>
-                        {new Date(el.created_at).toLocaleString("ko-KR", {
-                          timeZone: "Asia/Seoul",
-                          year: "numeric",
-                          month: "2-digit",
-                          day: "2-digit",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                          second: "2-digit",
+                        {new Date(el.created_at).toLocaleString('ko-KR', {
+                          timeZone: 'Asia/Seoul',
+                          year: 'numeric',
+                          month: '2-digit',
+                          day: '2-digit',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          second: '2-digit',
                         })}
                       </p>
                       <p>{el.comment}</p>
@@ -267,7 +263,7 @@ function Detail() {
         </div>
       </div>
     </main>
-  );
+  )
 }
 
-export default Detail;
+export default Detail
