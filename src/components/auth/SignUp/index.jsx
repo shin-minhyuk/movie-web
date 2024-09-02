@@ -5,6 +5,8 @@ import kakao from '../../../assets/ico_kakao_logo.png'
 import '../Login/style.js'
 import { modalSlice } from '../../../store/modalSlice.jsx'
 import CommonInput from '../CommonInput/index.jsx'
+import { client } from '../../../client/client.js'
+import { userSlice } from '../../../store/uesrSlice.jsx'
 
 export default function SignUp({ setIsLogin }) {
   const dispatch = useDispatch()
@@ -160,7 +162,7 @@ export default function SignUp({ setIsLogin }) {
       // 로그인 상태 조건에 따라 헤더 로그인 버튼 컴포넌트 유저 UI 변경
       dispatch(userSlice.actions.setIsUser(true))
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 

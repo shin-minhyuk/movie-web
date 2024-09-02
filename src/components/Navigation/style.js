@@ -34,4 +34,13 @@ export const NavWrapper = styled.div`
       }
     }
   }
+
+  .nav_bg_color {
+    font-weight: 600;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 6px;
+    background-color: red;
+    color: #fff;
+  }
 `

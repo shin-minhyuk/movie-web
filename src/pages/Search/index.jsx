@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react'
-import { clientMovie } from '../client/clientMovie'
-import Card from '../components/Card/Card'
-
-import '../styles/search.scss'
-import '../styles/home.scss'
+import { clientMovie } from '../../client/clientMovie'
+import Card from '../../components/Card'
+import styles from './style.module.scss'
 
 function Search() {
   const [value, setValue] = useState('')

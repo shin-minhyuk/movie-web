@@ -1,137 +1,85 @@
-.detail_backImage_box {
-  position: relative;
-  padding-top: 35%;
-  z-index: -1;
-  background-position: center top;
-  background-size: cover;
+// .detail_backImage_box {
+//   position: relative;
+//   padding-top: 35%;
+//   z-index: -1;
+//   background-position: center top;
+//   background-size: cover;
 
-  .detail_backImage_backdrop {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(0deg, var(--background-color), transparent);
-  }
-}
+//   .detail_backImage_backdrop {
+//     position: absolute;
+//     bottom: 0;
+//     width: 100%;
+//     height: 100%;
+//     background: linear-gradient(0deg, var(--background-color), transparent);
+//   }
+// }
 
-.detail_main {
-  max-width: 1366px;
-  width: 100%;
-  margin: auto;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 60px;
+// .detail_main {
+//   max-width: 1366px;
+//   width: 100%;
+//   margin: auto;
+//   padding: 16px;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 60px;
 
-  .detail_main_inner {
-    display: flex;
-    gap: 36px;
-    margin-top: -12rem;
+//   .detail_main_inner {
+//     display: flex;
+//     gap: 36px;
+//     margin-top: -12rem;
 
-    .detail_main_imgbox {
-      width: 40%;
-    }
-  }
-}
+//     .detail_main_imgbox {
+//       width: 40%;
+//     }
+//   }
+// }
 
-// 컴포넌트 CSS 적용 안됨 이슈로 직접 불러옴
-.card_more_average {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 4px solid rgb(32, 190, 98);
+// // 컴포넌트 CSS 적용 안됨 이슈로 직접 불러옴
+// .card_more_average {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   width: 60px;
+//   height: 60px;
+//   border-radius: 50%;
+//   border: 4px solid rgb(32, 190, 98);
 
-  span {
-    font-size: 12px;
-    text-align: center;
-  }
-}
+//   span {
+//     font-size: 12px;
+//     text-align: center;
+//   }
+// }
 
-.comments_container {
-  .comments {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    margin-bottom: 24px;
-    border-bottom: 1px solid rgba($color: #fff, $alpha: 0.2);
+// .search_inner {
+//   width: 100%;
+//   padding: 24px;
 
-    .comment {
-      display: flex;
-      gap: 12px;
-      padding: 20px;
-      margin-bottom: 6px;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   gap: 24px;
 
-      &:hover {
-        background-color: rgba($color: #fff, $alpha: 0.1);
-        border-radius: 8px;
-      }
+//   .search_category {
+//     display: flex;
+//     justify-content: center;
+//     gap: 24px;
 
-      .comment_content {
-        p:nth-child(1) {
-          font-size: 20px;
-          padding: 4px 0;
-        }
-        p:nth-child(2) {
-          font-weight: 100;
-          margin-bottom: 12px;
-          font-size: 12px;
-        }
-        p:nth-child(3) {
-          font-weight: 300;
-        }
-      }
-    }
-  }
+//     button {
+//       padding: 12px 16px;
+//     }
+//   }
 
-  .comment_sendBox {
-    display: flex;
-    gap: 12px;
+//   input[type="text"] {
+//     width: 100%;
+//     max-width: 1366px;
 
-    .comment_add {
-      flex: 1;
+//     padding: 14px;
+//     background-color: transparent;
+//     border: 1px solid #666;
+//     border-radius: 6px;
 
-      p {
-        font-size: 20px;
-        padding: 4px 0;
-        margin-bottom: 12px;
-      }
-
-      input {
-        width: 100%;
-        background-color: transparent;
-        border: 1px solid rgba($color: #fff, $alpha: 0.3);
-        padding: 12px;
-        margin-bottom: 16px;
-        border-radius: 6px;
-
-        &:focus {
-          outline: 1px solid red;
-          border: 1px solid red;
-        }
-      }
-
-      button {
-        display: flex;
-        gap: 6px;
-        background-color: red;
-        padding: 12px 16px;
-        border-radius: 6px;
-
-        span {
-          padding-right: 6px;
-        }
-      }
-    }
-  }
-}
-
-.comment_imgBox {
-  img {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-  }
-}
+//     &:focus {
+//       outline: 1px solid #5fbb73;
+//     }
+//   }
+// }

@@ -8,7 +8,7 @@ import 'swiper/css/pagination'
 
 // import required modules
 import { Pagination } from 'swiper/modules'
-import Card from '../../Card/Card'
+import Card from '../../Card'
 import { SectionWrapper } from './style'
 
 export default function SwiperSection({ movies, title }) {

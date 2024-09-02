@@ -1,9 +1,8 @@
 import axios from 'axios'
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { userSlice } from '../store/uesrSlice'
-import { client } from '../client/client'
+import { userSlice } from '../../store/uesrSlice'
 
 function KakaoLogin() {
   const [searchParams] = useSearchParams()

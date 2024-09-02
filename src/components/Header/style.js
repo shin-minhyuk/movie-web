@@ -22,4 +22,8 @@ export const HeaderWrapper = styled.header`
       }
     }
   }
+
+  &.header_bg {
+    background-color: var(--modal-bg-color);
+  }
 `

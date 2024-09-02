@@ -84,4 +84,19 @@ export const MainWrapper = styled.div`
       }
     }
   }
+
+  .card_more_average {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 4px solid rgb(32, 190, 98);
+
+    span {
+      font-size: 12px;
+      text-align: center;
+    }
+  }
 `
