@@ -1,7 +1,9 @@
 import { useSelector } from 'react-redux'
-import { clientMovie } from '../client/clientMovie'
+import { clientMovie } from '../../client/clientMovie'
 import { useEffect, useState } from 'react'
-import Card from '../components/Card/Card'
+import Card from '../../components/Card'
+import Title from '../../components/Title'
+import styles from './style.module.scss'
 
 function Favorite() {
   const { favorites } = useSelector((state) => state.favorites)
@@ -33,16 +35,17 @@ function Favorite() {
   }, [favorites])
 
   return (
-    <div className="search_container">
-      <div className="home_inner ">
-        <div className="card_container">
-          <div className="title_box">
+    <div className={styles.search_container}>
+      <div className={styles.home_inner}>
+        <div>
+          {/* <div className="title_box">
             <h1 className="text-[24px] ">
               내가 관심있는 영화 ({`${favorites.length}`})
             </h1>
             <div className="bg-[red] w-[100px] h-[5px]"></div>
-          </div>
-          <div className="search_movie_container">
+          </div> */}
+          <Title text={`내가 관심있는 영화 (${favorites.length})`} />
+          <div className={styles.search_movie_container}>
             {filteredData?.map((el) => (
               <Card key={el.id} movie={el} />
             ))}

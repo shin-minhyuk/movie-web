@@ -1,0 +1,34 @@
+.comment {
+  display: flex;
+  gap: 12px;
+  padding: 20px;
+  margin-bottom: 6px;
+
+  &:hover {
+    background-color: rgba($color: #fff, $alpha: 0.1);
+    border-radius: 8px;
+  }
+
+  .comment_content {
+    p:nth-child(1) {
+      font-size: 20px;
+      padding: 4px 0;
+    }
+    p:nth-child(2) {
+      font-weight: 100;
+      margin-bottom: 12px;
+      font-size: 12px;
+    }
+    p:nth-child(3) {
+      font-weight: 300;
+    }
+  }
+}
+
+.comment_imgBox {
+  img {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+  }
+}

@@ -1,21 +1,17 @@
 import { useSelector } from 'react-redux'
-import '../styles/home.scss'
-import '../styles/detail.scss'
-
-import SwiperMain from '../components/Swiper/SwiperMain'
+import SwiperMain from '../../components/Swiper/SwiperMain'
 import { useEffect, useRef, useState } from 'react'
-import Card from '../components/Card/Card'
-import { clientMovie } from '../client/clientMovie'
+import { clientMovie } from '../../client/clientMovie'
+import styles from './style.module.scss'
+import Card from '../../components/Card'
 
 function DetailList() {
   // 메인 페이지 데이터
   const { now_playing } = useSelector((state) => state.movieMain)
-
   const [movies, setMovies] = useState([])
   const [page, setPage] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
-
   const lastItemRef = useRef()
   const observer = useRef()
 
@@ -84,22 +80,20 @@ function DetailList() {
       <div>
         <SwiperMain filteredData={now_playing} />
       </div>
-      <div className="search_container">
-        <div className="home_inner">
-          <div className="card_container">
-            <div className="search_movie_container">
-              {movies?.map((el, index) => (
-                <div
-                  key={el.id}
-                  // ref를 사용해서 div 돔 노드에 접근
-                  // 현재 항목의 인덱스가 항목 배열의 마지막 인덱스와 같은지를 확인합니다.
-                  // 이는 index가 배열의 마지막 항목일 때 true가 됩니다.
-                  ref={index === movies.length - 1 ? lastItemRef : null}
-                >
-                  <Card movie={el} />
-                </div>
-              ))}
-            </div>
+      <div className={styles.search_container}>
+        <div className={styles.home_inner}>
+          <div className={styles.search_movie_container}>
+            {movies?.map((el, index) => (
+              <div
+                key={el.id}
+                // ref를 사용해서 div 돔 노드에 접근
+                // 현재 항목의 인덱스가 항목 배열의 마지막 인덱스와 같은지를 확인합니다.
+                // 이는 index가 배열의 마지막 항목일 때 true가 됩니다.
+                ref={index === movies.length - 1 ? lastItemRef : null}
+              >
+                <Card movie={el} />
+              </div>
+            ))}
           </div>
         </div>
       </div>
