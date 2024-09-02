@@ -56,24 +56,24 @@ function Search() {
 
   return (
     <>
-      <div className="search_container">
-        <div className="search_inner">
-          <div className="search_category">
+      <div className={styles.search_container}>
+        <div className={styles.search_inner}>
+          <div className={styles.search_category}>
             <button
-              className={category === 'movie' ? 'btn_color' : null}
+              className={category === 'movie' ? styles.btn_color : null}
               onClick={() => setCategory('movie')}
             >
               영화
             </button>
             <button
-              className={category === 'TV' ? 'btn_color' : null}
+              className={category === 'TV' ? styles.btn_color : null}
               onClick={() => setCategory('TV')}
             >
               TV
             </button>
-            {/* 배우, card 컴포넌트 프롭스 타입 추가 및 추가 작성 코드 필요 */}
+            {/* TODO(0903): 배우, card 컴포넌트 프롭스 타입 추가 및 추가 작성 코드 필요 */}
             <button
-              className={category === 'actor' ? 'btn_color' : null}
+              className={category === 'actor' ? styles.btn_color : null}
               onClick={() => setCategory('actor')}
             >
               배우
@@ -85,7 +85,7 @@ function Search() {
             onChange={onChange}
             placeholder="보고싶은 영화를 검색해주세요"
           />
-          <div className="search_movie_container">
+          <div className={styles.search_movie_container}>
             {data?.map((el) => (
               <Card key={el.id} movie={el} />
             ))}
