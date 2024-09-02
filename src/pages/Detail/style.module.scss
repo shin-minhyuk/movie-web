@@ -83,3 +83,10 @@
     }
   }
 }
+
+.search_movie_container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0 auto;
+  gap: 10px;
+}
